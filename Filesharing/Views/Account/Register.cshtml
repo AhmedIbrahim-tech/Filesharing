@@ -1,0 +1,39 @@
+﻿@model RegistertViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+@*<h1>@ViewData["Title"]</h1>*@
+
+
+<form method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Create a new account.</h4>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="ComfirmPassword"></label>
+                <input type="password" asp-for="ComfirmPassword" class="form-control" />
+                <span asp-validation-for="ComfirmPassword" class="text-danger"></span>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Register</button>
+
+        </div>
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
