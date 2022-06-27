@@ -16,6 +16,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 }).AddEntityFrameworkStores<ApplicationDBContext>();
 
+
+builder.Services.AddTransient<IMailServices, MailServices>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

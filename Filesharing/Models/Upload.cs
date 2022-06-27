@@ -20,7 +20,7 @@
 
         [Display(Name = "User")]
         public string? UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public IdentityUser? User { get; set; }
 
         public long DownloadCount { get; set; }
     }

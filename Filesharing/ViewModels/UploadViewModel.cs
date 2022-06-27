@@ -1,8 +1,8 @@
-﻿namespace Filesharing.Models
+﻿namespace Filesharing.ViewModels
 {
     public class InputUpolad
     {
-        public IFormFile File { get; set; }
+        public IFormFile? File { get; set; }
     }
 
     public class UploadViewModel

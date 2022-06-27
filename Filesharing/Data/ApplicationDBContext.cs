@@ -10,6 +10,8 @@ namespace Filesharing.Data
         }
 
         public DbSet<Upload> Uploads { get; set; }
+
+        public DbSet<Contact> Contacts { get; set; }
         
     }
 }

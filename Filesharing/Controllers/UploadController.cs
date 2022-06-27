@@ -33,6 +33,7 @@
                     ContentType = u.ContantType,
                     OriginalFileName = u.OriginalFileName,
                     DownloadCount = u.DownloadCount,
+                    UploadDate = u.UploadDate
                 });
             return View(result);
 
@@ -110,7 +111,8 @@
                     FileName = fileName,
                     ContantType = model.File.ContentType,
                     Size = model.File.Length,
-                    UserId = userid
+                    UserId = userid,
+                    UploadDate =  DateTime.Now
                 };
 
                 await db.Uploads.AddAsync(inputupload);

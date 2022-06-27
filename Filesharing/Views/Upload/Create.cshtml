@@ -6,6 +6,10 @@
 }
 
 
+<div style="float:right">
+    <a asp-action="Index" class="btn btn-outline-primary"> Back To List </a>
+</div>
+
 <h1>@ViewData["Title"]</h1>
 
 <div class="row">
@@ -22,9 +26,8 @@
                 </div>
                 <br />
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Submit</button> 
-                    |
-                    <a asp-action="Index" class="btn btn-info"> Back To List </a>
+                    <button type="submit" class="btn btn-outline-primary ">Upload</button> 
+                    
                 </div>
             </form>
         </section>

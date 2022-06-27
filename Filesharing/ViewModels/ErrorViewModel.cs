@@ -1,4 +1,4 @@
-namespace Filesharing.Models
+namespace Filesharing.ViewModels
 {
     public class ErrorViewModel
     {

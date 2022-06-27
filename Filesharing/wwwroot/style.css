@@ -140,7 +140,7 @@ kbd {
 	background-color: #ddd;
 	padding: 4px 6px;
 	border-radius: 2px;
-	color: ;
+	
 }
 
 address {
@@ -1177,7 +1177,7 @@ a:focus,
 	padding: 50px 0 40px;
 }
 
-.mu-standard-pricing .mu-single-pricebox {;
+.mu-standard-pricing .mu-single-pricebox {
 	padding: 5px 0 40px;
 }
 
@@ -1469,6 +1469,8 @@ a:focus,
 	display: inline;
 	float: left;
 	width: 100%;
+	bottom:0;
+	position: relative;
 }
 
 .mu-footer-top {
@@ -2426,10 +2428,6 @@ a:focus,
 	margin-bottom: 10px;
 	margin-top: 10px;
 	padding: 8px 10px;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
-	-ms-transition: all 0.5s;
-	-o-transition: all 0.5s;
 	transition: all 0.5s;
 }
 
@@ -2506,10 +2504,6 @@ a:focus,
 	padding: 5px;
 	text-align: center;
 	width: 25px;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
-	-ms-transition: all 0.5s;
-	-o-transition: all 0.5s;
 	transition: all 0.5s;
 }
 
@@ -2562,10 +2556,6 @@ a:focus,
 	height: 40px;
 	padding: 0 10px;
 	width: 65%;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
-	-ms-transition: all 0.5s;
-	-o-transition: all 0.5s;
 	transition: all 0.5s;
 }
 
@@ -2575,10 +2565,6 @@ a:focus,
 	padding: 15px;
 	height: 200px;
 	width: 100%;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
-	-ms-transition: all 0.5s;
-	-o-transition: all 0.5s;
 	transition: all 0.5s;
 }
 
