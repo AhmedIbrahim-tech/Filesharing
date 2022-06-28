@@ -1,7 +1,10 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); ;
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation().AddViewLocalization( op =>
+{
+    op.ResourcesPath = "Helper/Resources";
+});
 
 builder.Services.AddDbContext<ApplicationDBContext>(option =>
     option.UseSqlServer(
@@ -18,6 +21,12 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 
 builder.Services.AddTransient<IMailServices, MailServices>();
+
+// Add Localization
+
+builder.Services.AddLocalization();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,11 +37,24 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+// Http >> Htpps
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+// For Localization
+var SupportedLecture = new[] { "ar-SA" , "en-US" };
+app.UseRequestLocalization( reg =>  // "Ar-SA" , "en-US" , "fr-FR"
+{
+    reg.AddSupportedUICultures(SupportedLecture);
+    reg.AddSupportedCultures(SupportedLecture);
+    reg.SetDefaultCulture("en-US");
+}
+    ); 
+
+// For Account ( Register & Login ) 
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using System.Diagnostics;
 using System.Text;
 
 namespace Filesharing.Controllers
@@ -106,6 +108,19 @@ namespace Filesharing.Controllers
             return View(modal);
         }
 
+        [HttpGet]
+        public ActionResult SetLang(string Lang)
+        {
+            if (!string.IsNullOrEmpty(Lang))
+            {
+                Response.Cookies.Append(
+                    CookieRequestCultureProvider.DefaultCookieName,
+                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(Lang)),
+                    new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1)}
+                );
+            }
+            return RedirectToAction("Index");
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

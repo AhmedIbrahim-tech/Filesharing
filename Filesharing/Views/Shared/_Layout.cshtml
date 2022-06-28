@@ -1,11 +1,26 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Localization;
+@inject IViewLocalizer Localizer;
+
+@{
+    var ReqCulture = Context.Features.Get<IRequestCultureFeature>();
+    var Culture = ReqCulture.RequestCulture.Culture.Name;
+    bool ISArabic = Culture == "ar-SA";
+}
+
+<!DOCTYPE html>
+<html lang="@(ISArabic ? "ar" : "en")">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - File Sharing</title>
-    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
-    @*<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />*@
+    <title>@ViewData["Title"]</title>
+
+    @if (ISArabic)
+    {
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        @*<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />*@
+        
+    }
+
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.css" asp-append-version="true" />
 
 
@@ -37,7 +52,7 @@
 
 
 </head>
-<body>
+<body dir="@(ISArabic ? "rtl" : "ltr")">
 
        <!--START SCROLL TOP BUTTON -->
     <a class="scrollToTop" href="#">
@@ -50,7 +65,7 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light mu-navbar">
                 <!-- Text based logo -->
-                <a class="navbar-brand mu-logo" asp-area="" asp-controller="Home" asp-action="Index" ><span>File Sharing</span></a>
+                <a class="navbar-brand mu-logo" asp-area="" asp-controller="Home" asp-action="Index" ><span> @Localizer["FileSharing"] </span></a>
                 <!-- image based logo -->
                    <!-- <a class="navbar-brand mu-logo" href="index.html"><img src="~/assets/images/logo.png" alt="logo"></a> -->
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,26 +75,34 @@
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto mu-navbar-nav">
                     <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/home/index" || Context.Request.Path.Value.ToLower() == "/" ? "active" : "")">
-                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
                     </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/upload/browse" ? "active" : "")">
-                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Upload" asp-action="Browse">Browse</a>
+                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Upload" asp-action="Browse">@Localizer["Browse"]</a>
                     </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/home/about" ? "active" : "")">
-                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="About">@Localizer["About"]</a>
                     </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/home/contact" ? "active" : "")">
-                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="Contact">@Localizer["Contact"]</a>
                     </li>
 
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/upload/index" || Context.Request.Path.Value.ToLower() == "/upload" ? "active" : "")">
-                            <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Upload" asp-action="Index">Upload</a>
-                        </li>
-                    }
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/upload/index" || Context.Request.Path.Value.ToLower() == "/upload" ? "active" : "")">
+                                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Upload" asp-action="Index">@Localizer["Uploads"]</a>
+                            </li>
+                        }
 
-                    @Html.Partial("_LoginPartial")
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Language"]</a>
+                        <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/Home/SetLang?Lang=ar-SA">العربية</a>
+                        <a class="dropdown-item" href="/Home/SetLang?Lang=en-US">English</a>
+                     </li>
+
+
+                        @Html.Partial("_LoginPartial")
 
 
                 </ul>

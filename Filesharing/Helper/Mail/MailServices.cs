@@ -19,10 +19,10 @@ namespace Filesharing.Helper.Mail
                 Msg.To.Add(model.Email);
                 Msg.Subject = model.Subject;
                 Msg.Body = model.Body;
-                Msg.From = new MailAddress(config.GetValue<string>("Mail:Form"), config.GetValue<string>("Mail:Sender"), System.Text.Encoding.UTF8);
+                Msg.From = new MailAddress(config.GetValue<string>("Mail:From"), config.GetValue<string>("Mail:Sender"), System.Text.Encoding.UTF8);
                 Msg.IsBodyHtml = true;
 
-                client.Credentials = new System.Net.NetworkCredential(config.GetValue<string>("Mail:Form"), config.GetValue<string>("Mail:PWD"));
+                client.Credentials = new System.Net.NetworkCredential(config.GetValue<string>("Mail:From"), config.GetValue<string>("Mail:PWD"));
                 client.Send(Msg);
 
             }
