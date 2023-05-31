@@ -1,0 +1,44 @@
+﻿@model IEnumerable<UploadViewModel>
+
+@{
+    ViewData["Title"] = "Search";
+    var ContentTypeArr = new[] { "image/png", "image/jpeg" };
+
+}
+
+<h3>Search</h3>
+
+<hr />
+
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="card mb-3">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        @if (ContentTypeArr.Contains(item.ContentType))
+                        {
+                            <img width="70" height="70" src="~/Uploads/@item.FileName" class="img-thumbnail" alt="@item.OriginalFileName" />
+                        }
+                        else{
+                            <img src="~/img/File.png" width="70" height="70" class="img-thumbnail" alt="@item.OriginalFileName" />
+                        }
+
+                    </div>
+                    <div class="col-md-8 d-flex align-items-center">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.OriginalFileName.ToUpper()</h5>
+                            <p class="card-text">@item.Size</p>
+                            <p class="card-text">@item.UploadDate</p>
+                            <a class="btn btn-success" style="float: right;" asp-action="Download" asp-controller="Upload" asp-route-id="@item.FileName">Download</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>

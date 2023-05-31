@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewData["Title"] = "Personal Information";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+<p>
+    <strong> Logged in user </strong> : <span> @User.Identity.Name </span>
+</p>
+<br />
+
+<h2> Manage </h2>
+
+<a class="btn btn-outline-primary">
+    Change Password
+</a>

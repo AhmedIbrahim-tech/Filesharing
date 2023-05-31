@@ -1,0 +1,66 @@
+﻿@model RegistertViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+@*<h1>@ViewData["Title"]</h1>*@
+
+
+<!-- Start Register -->
+<section id="mu-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-contact-area">
+                    <!-- Title -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mu-title">
+                                <h2>Sign Up !</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Start Register Content -->
+                    <div class="mu-contact-content">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="mu-contact-form-area">
+                                    <div id="form-messages"></div>
+                                    <form id="contact" class="mu-contact-form" asp-controller="Account" asp-action="Register" method="post">
+                                        <div asp-validation-summary="ModelOnly"></div>
+                                        <div class="form-group">
+                                            <span class="fa fa-envelope mu-contact-icon"></span>
+                                            <input type="email" asp-for="Email" class="form-control" placeholder="Enter Email" id="email" required>
+                                            <span asp-validation-for="Email"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <span class="fa fa-pencil-square-o mu-contact-icon"></span>
+                                            <input type="password" asp-for="Password" class="form-control" placeholder="Password" id="Password" required></input>
+                                            <span asp-validation-for="Password"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <span class="fa fa-pencil-square-o mu-contact-icon"></span>
+                                            <input type="password" asp-for="ComfirmPassword" class="form-control" placeholder="Password" id="Password" required></input>
+                                            <span asp-validation-for="ComfirmPassword"></span>
+                                        </div>
+                                        <button type="submit" class="mu-send-msg-btn"><span>Register</span></button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- End Register Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Register -->
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

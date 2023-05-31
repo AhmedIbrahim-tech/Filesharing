@@ -1,0 +1,58 @@
+﻿@model IEnumerable<UploadViewModel>
+@{
+    ViewData["Title"] = "Browse";
+}
+
+<h1>Browse Uploads</h1>
+
+
+<hr />
+
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="card mb-3">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        @if (item.ContentType.ToLower().StartsWith("image/"))
+                        {
+                            <img width="100%" height="100%" src="~/Uploads/@item.FileName" class="img-thumbnail" alt="@item.OriginalFileName" />
+                        }else{
+                            <img width="100%" height="100%" src="~/img/File.png" class="img-thumbnail" alt="@item.OriginalFileName" />
+                        }
+                    </div>
+                    <div class="col-md-8 d-flex align-items-center">
+                        <div class="card-body">
+                            <h5 class="card-title"> @item.OriginalFileName.ToUpper()</h5>
+                            <p class="card-text">
+                                @{
+                                    var size = item.Size / 1024;
+                                    if (size < 1024)
+                                    {
+
+                                        <span> <strong> Size : </strong> @Math.Floor(Convert.ToDecimal(size)) Kb</span>
+                                    }
+                                    else
+                                    {
+                                        <span> <strong> Size : </strong> (@Math.Floor(Convert.ToDecimal(size)) / 1024) Mb</span>
+                                    }
+                                }
+                            </p>
+                            <p class="card-text"><strong> Date : </strong> @item.UploadDate</p>
+                            <p class="card-text"> <strong> Download Count : </strong> @item.DownloadCount</p>
+                            <a class="btn btn-success" style="float: right;" asp-action="Download" asp-controller="Upload" asp-route-id="@item.FileName">Download</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+        <div class="col-12 text-center">
+            <a href="/Upload/Browse" class="btn btn-outline-primary">PREV</a>
+            <a href="/Upload/Browse" class="btn btn-outline-primary">NEXT</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+﻿@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<!-- Start login -->
+<section id="mu-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-contact-area">
+                    <!-- Title -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mu-title">
+                                <h2>Sign Up !</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Start login Content -->
+                    <div class="mu-contact-content">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="mu-contact-form-area">
+                                    <div id="form-messages"></div>
+                                    <form id="contact" class="mu-contact-form" asp-controller="Account" asp-action="login" method="post">
+                                        <div asp-validation-summary="ModelOnly"></div>
+                                        <div class="form-group">
+                                            <span class="fa fa-envelope mu-contact-icon"></span>
+                                            <input type="email" asp-for="Email" class="form-control" placeholder="Enter Email" id="email" required>
+                                            <span asp-validation-for="Email"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <span class="fa fa-pencil-square-o mu-contact-icon"></span>
+                                            <input type="password" asp-for="Password" class="form-control" placeholder="Password" id="Password" required></input>
+                                            <span asp-validation-for="Password"></span>
+                                        </div>
+
+                                        <button type="submit" class="mu-send-msg-btn"><span>login</span></button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- End login Content -->
+                    <br />
+                    <hr />
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="login-with-google-btn" asp-action="ExternalLogin" asp-route-Provider="Facebook" asp-controller="Account">
+                                Sign in with Facebook
+                            </a>
+
+                            <a class="login-with-google-btn" asp-action="ExternalLogin" asp-route-Provider="Google" asp-controller="Account">
+                                Sign in with Google
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End login -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

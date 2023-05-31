@@ -1,0 +1,12 @@
+﻿global using Microsoft.AspNetCore.Mvc;
+global using System.ComponentModel.DataAnnotations;
+global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Identity;
+global using Filesharing.Models;
+global using Filesharing.ViewModels;
+global using Microsoft.AspNetCore.Authorization;
+global using Filesharing.Data;
+global using System.Security.Claims;
+global using Filesharing.Helper.Mail;
+global using Filesharing.Helper.Resources;

@@ -1,0 +1,51 @@
+﻿@model InputFile
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create upload";
+}
+
+
+<div style="display: flex;justify-content: end;">
+    <a asp-action="Index" class="btn btn-outline-primary"> Back To List </a>
+</div>
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Choose file</label>
+                <input asp-for="File" class="form-control" type="file" id="formFile">
+            </div>
+
+            <br />
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-primary ">Upload</button>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Add the following code if you want the name of the file appear on select
+        $("#formFile").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".form-label").addClass("selected").html(fileName);
+        });
+    </script>
+
+
+}

@@ -1,0 +1,24 @@
+[
+	{
+		"outputFileName": "wwwroot/bundle/css/bundle.min.css",
+		"inputFiles": [
+			"wwwroot/style.css",
+			"wwwroot/css/site.css",
+			"wwwroot/assets/css/magnific-popup.css",
+			"wwwroot/assets/css/slick.css"
+		],
+		"minify": { "enabled": true },
+		"sourceMap": false
+	},
+
+	{
+		"outputFileName": "wwwroot/bundle/js/bundle.min.js",
+		"inputFiles": [
+			"wwwroot/assets/js/counter.js",
+			"wwwroot/assets/js/app.js",
+			"wwwroot/assets/js/custom.js"
+		],
+		"minify": { "enabled": true },
+		"sourceMap": false
+	}
+]

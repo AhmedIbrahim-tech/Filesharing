@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Localization;
+@inject IViewLocalizer Localizer;
+
+@* Convert Pages From [ar] to [en] or Reverse According to language*@
+@{
+    var ReqCulture = Context.Features.Get<IRequestCultureFeature>();
+    var Culture = ReqCulture.RequestCulture.Culture.Name;
+    bool ISArabic = Culture == "ar-SA";
+}
+
+<!DOCTYPE html>
+<html lang="@(ISArabic ? "ar" : "en")">
+<head>
+
+    @Html.Partial("~/Views/Shared/Layout/_Header.cshtml")
+    
+</head>
+<body dir="@(ISArabic ? "rtl" : "ltr")">
+
+    <!--START SCROLL TOP BUTTON -->
+    <a class="scrollToTop" href="#">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- END SCROLL TOP BUTTON -->
+    @Html.Partial("~/Views/Shared/Layout/_Navbar.cshtml")
+
+    <div class="container">
+        <main role="main" class="pb-3" style="margin-top : 15%">
+            @RenderBody()
+        </main>
+    </div>
+
+
+    @Html.Partial("~/Views/Shared/Layout/_footer.cshtml")
+
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            lazyload();
+        });
+    </script>
+</body>
+</html>
