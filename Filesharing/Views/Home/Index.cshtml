@@ -1,6 +1,27 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var ContentTypeArr = new[] { "image/png", "image/jpeg" };
+
 }
+
+
+
+	<!-- Start Breadcrumb -->
+	<div id="mu-breadcrumb" style="margin-bottom:1%">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<nav aria-label="breadcrumb" role="navigation">
+					  <ol class="breadcrumb mu-breadcrumb">
+					    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+					    <li class="breadcrumb-item active" aria-current="page">Home</li>
+					  </ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Breadcrumb -->
 
 <div class="text-center">
     <h1 class="display-4">Welcome, Search Files</h1>
@@ -12,7 +33,7 @@
 
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="Search ... " aria-label="Recipient's username" aria-describedby="button-addon2" name="Term">
-                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="bi bi-google"></i></button>
+                    <button class="btn btn-outline-success" type="submit" id="button-addon2"><i class="bi bi-search"></i></button>
                 </div>
 
             </form>
@@ -30,7 +51,7 @@
                     {
                         <tr>
                             <td>
-                                @if (item.ContentType.ToLower().StartsWith("image/"))
+                                @if (ContentTypeArr.Contains(item.ContentType))
                                 {
                                     <img width="70" height="70" src="~/Uploads/@item.FileName" class="img-thumbnail" alt="@item.OriginalFileName" />
                                 }

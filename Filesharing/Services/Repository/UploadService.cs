@@ -60,7 +60,7 @@ namespace Filesharing.Services.Repository
         {
             var Model = db.Uploads
                           .Where(U => U.OriginalFileName.Contains(term)
-                            || U.FileName.Contains(term) || U.ContantType.Contains(term))
+                            || U.FileName.Contains(term) || U.ContentType.Contains(term))
                           .OrderByDescending(x => x.DownloadCount)
                           .ProjectTo<UploadViewModel>(_mapper.ConfigurationProvider);
             return Model;
@@ -142,7 +142,7 @@ namespace Filesharing.Services.Repository
         public async Task<UploadViewModel> Find(string id)
         {
             // This's Code Be., Not AnyOne Delete Item From Another User 
-            var SelectedItem = await db.Uploads.FindAsync(id);
+            var SelectedItem = await db.Uploads.FirstOrDefaultAsync(x=>x.FileName == id);
             if (SelectedItem != null)
             {
                 return _mapper.Map<UploadViewModel>(SelectedItem);
@@ -168,7 +168,7 @@ namespace Filesharing.Services.Repository
 
         public async Task IncreamentDownloadCount(string id)
         {
-            var SelectedItem = await db.Uploads.FindAsync(id);
+            var SelectedItem = await db.Uploads.FirstOrDefaultAsync(x => x.FileName == id);
             if (SelectedItem != null)
             {
                 // Counter for Download 

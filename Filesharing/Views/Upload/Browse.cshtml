@@ -1,12 +1,43 @@
 ﻿@model IEnumerable<UploadViewModel>
 @{
     ViewData["Title"] = "Browse";
+    var ContentTypeArr = new[] { "image/png", "image/jpeg" };
+
 }
 
-<h1>Browse Uploads</h1>
+@* <h1>Browse Uploads</h1> *@
 
+@* <hr> *@
+	<!-- Start Page Header area -->
+	<div id="mu-page-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="mu-page-header-area">
+						<h1 class="mu-page-header-title">Browse Uploads</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Page Header area -->
 
-<hr />
+	<!-- Start Breadcrumb -->
+	<div id="mu-breadcrumb">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<nav aria-label="breadcrumb" role="navigation">
+					  <ol class="breadcrumb mu-breadcrumb">
+					    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+					    <li class="breadcrumb-item active" aria-current="page">Browse Uploads</li>
+					  </ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Breadcrumb -->
 
 
 
@@ -17,7 +48,7 @@
             <div class="card mb-3">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        @if (item.ContentType.ToLower().StartsWith("image/"))
+                        @if (ContentTypeArr.Contains(item.ContentType))
                         {
                             <img width="100%" height="100%" src="~/Uploads/@item.FileName" class="img-thumbnail" alt="@item.OriginalFileName" />
                         }else{

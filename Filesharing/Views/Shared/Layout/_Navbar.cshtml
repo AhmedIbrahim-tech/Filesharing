@@ -3,48 +3,49 @@
 <!-- Start Header -->
 <header id="mu-hero">
     <div class="">
-        <nav class="navbar navbar-expand-lg navbar-light mu-navbar">
+            <nav class="navbar navbar-expand-lg navbar-light mu-navbar">
             <!-- Text based logo -->
-            <a class="navbar-brand mu-logo" asp-area="" asp-controller="Home" asp-action="Index"><span> @Localizer["FileSharing"] </span></a>
+            <a class="navbar-brand mu-logo " asp-area="" asp-controller="Home" asp-action="Index"><span> @Localizer["FileSharing"] </span></a>
+
             <!-- image based logo -->
             <!-- <a class="navbar-brand mu-logo" href="index.html"><img src="~/assets/images/logo.png" alt="logo"></a> -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fa fa-bars"></span>
-            </button>
+              </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto mu-navbar-nav">
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto mu-navbar-nav navbar-ul">
+
                     <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/home/index" || Context.Request.Path.Value.ToLower() == "/" ? "active" : "")">
-                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
                     </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/upload/browse" ? "active" : "")">
-                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Upload" asp-action="Browse">@Localizer["Browse"]</a>
+                        <a asp-area="" asp-controller="Upload" asp-action="Browse">@Localizer["Browse"]</a>
                     </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/home/about" ? "active" : "")">
-                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="About">@Localizer["About"]</a>
+                        <a asp-area="" asp-controller="Home" asp-action="About">@Localizer["About"]</a>
                     </li>
                     <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/home/contact" ? "active" : "")">
-                        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="Contact">@Localizer["Contact"]</a>
+                        <a asp-area="" asp-controller="Home" asp-action="Contact">@Localizer["Contact"]</a>
                     </li>
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/upload/index" || Context.Request.Path.Value.ToLower() == "/upload" ? "active" : "")">
-                            <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Upload" asp-action="Index">@Localizer["Uploads"]</a>
-                        </li>
+                            <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/upload/index" || Context.Request.Path.Value.ToLower() == "/upload" ? "active" : "")">
+                                <a asp-area="" asp-controller="Upload" asp-action="Index">@Localizer["Uploads"]</a>
+                            </li>
                     }
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Language"]</a>
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Language"]</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="/Home/SetLang?Lang=ar-SA&returnUrl=@Context.Request.Path.Value">العربية</a>
                             <a class="dropdown-item" href="/Home/SetLang?Lang=en-US&returnUrl=@Context.Request.Path.Value">English</a>
                     </li>
-
-
+                </ul>
+                                
+                <ul class="navbar-nav mu-navbar-nav navbar-auth">
                     @Html.Partial("_LoginPartial")
-
-
                 </ul>
             </div>
         </nav>

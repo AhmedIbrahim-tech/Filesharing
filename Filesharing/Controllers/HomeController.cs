@@ -36,7 +36,7 @@ namespace Filesharing.Controllers
                     ID = u.ID,
                     FileName = u.FileName,
                     Size = u.Size,
-                    ContentType = u.ContantType,
+                    ContentType = u.ContentType,
                     OriginalFileName = u.OriginalFileName,
                     DownloadCount = u.DownloadCount,
                 });

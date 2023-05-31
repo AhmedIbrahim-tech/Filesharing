@@ -4,19 +4,19 @@
 {
 
     <li class="nav-item">
-        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Home" asp-action="Info">@Localizer["Hi"], @User.Identity.Name</a>
+        <a asp-area="" asp-controller="Home" asp-action="Info">@Localizer["Hi"], @User.Identity.Name</a>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-area="" asp-controller="Account" asp-action="LogOut">@Localizer["Logout"]</a>
+        <a asp-area="" asp-controller="Account" asp-action="LogOut">@Localizer["Logout"]</a>
     </li>
 }
 else
 {
     <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/account/register" ? "active" : "")">
-         <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
+         <a asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
     </li>
     <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/account/login" ? "active" : "")">
-         <a class="nav-link text-dark px-lg-3 py-3 py-lg-4" asp-controller="Account" asp-action="Login">@Localizer["Login"]</a>
+         <a asp-controller="Account" asp-action="Login">@Localizer["Login"]</a>
     </li>
 }

@@ -3,9 +3,30 @@
     ViewData["Title"] = "Index";
     Layout = "_Layout";
 
-    var ContentTypeArr = new[] { "image/png", "image/jpeg" };
+    var ContentTypeArr = new[] { "image/png", "image/jpeg", "image/jpg", "image/gif" };
 }
 
+
+	<!-- Start Breadcrumb -->
+	<div id="mu-breadcrumb" style="margin-bottom:1%">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<nav aria-label="breadcrumb" role="navigation">
+					  <ol class="breadcrumb mu-breadcrumb">
+					    <li class="breadcrumb-item"><a asp-controller="Upload" asp-action="Index">Upload</a></li>
+					    <li class="breadcrumb-item active" aria-current="page">Home</li>
+					  </ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Breadcrumb -->
+
+
+
+<div class="container">
 
 <div class="row">
     <div class="col-lg-12" style="margin-bottom:1%">
@@ -92,12 +113,12 @@
                         </td>
 
                         <td>
-                            <a asp-action="Edit" asp-route-id="" class="btn btn-success">
+                           @* <a asp-action="Edit" asp-route-id="" class="btn btn-success">
                                 Edit
                             </a>
                             <a asp-action="Details" asp-route-id="" class="btn btn-info">
                                 Details
-                            </a>
+                            </a>*@
                             <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">
                                 Delete
                             </a>
@@ -107,5 +128,6 @@
             </tbody>
         </table>
     </div>
+</div>
 </div>
 

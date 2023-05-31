@@ -43,10 +43,8 @@ namespace Filesharing.Controllers
         public async Task<IActionResult> Download(string id)
         {
             var selectedFile = await db.Find(id);
-            if (selectedFile == null)
-            {
-                return NotFound();
-            }
+            
+            if (selectedFile == null) { return NotFound(); }
 
             await db.IncreamentDownloadCount(id);
 

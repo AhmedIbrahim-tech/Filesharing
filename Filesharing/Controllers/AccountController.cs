@@ -1,133 +1,159 @@
-﻿namespace Filesharing.Controllers
+﻿using Filesharing.ViewModels;
+
+namespace Filesharing.Controllers
 {
-	public class AccountController : Controller
-	{
-		private readonly SignInManager<IdentityUser> signInManager;
-		private readonly UserManager<IdentityUser> userManager;
+    #region Contractor
 
-		public AccountController(
-			SignInManager<IdentityUser> signInManager,  // We Use with Login
-			UserManager<IdentityUser> userManager       // We Use with Register
-			)
-		{
-			this.signInManager = signInManager;
-			this.userManager = userManager;
-		}
+    public class AccountController : Controller
+    {
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<IdentityUser> userManager;
 
-		[HttpGet]
-		public IActionResult Login()
-		{
-			return View();
-		}
+        public AccountController(
+            SignInManager<IdentityUser> signInManager,  // We Use with Login
+            UserManager<IdentityUser> userManager       // We Use with Register
+            )
+        {
+            this.signInManager = signInManager;
+            this.userManager = userManager;
+        }
+        #endregion
 
-		[HttpPost]
-		public async Task<IActionResult> Login(LoginViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var Result = await signInManager.PasswordSignInAsync(model.Email, model.Password, true, false); //True = Remember me , False = Lock the Account after 5 Times.
-				if (Result.Succeeded)
-				{
-					return RedirectToAction("Create", "Upload");
-				}
-				else
-				{
-					return View(model);
-				}
-			}
+        #region Login
 
-			return View(model);
-		}
+        [HttpGet]
+        public IActionResult Login(string returnurl = null)
+        {
+            ViewData["ReturnUrl"] = returnurl;
+            return View();
+        }
 
-		[HttpGet]
-		public IActionResult Register()
-		{
-			return View();
-		}
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnurl = null)
+        {
+            ViewData["ReturnUrl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
 
-		[HttpPost]
-		public async Task<IActionResult> Register(RegistertViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var user = new IdentityUser()
-				{
-					UserName = model.Email,
-					Email = model.Email
-				};
-				var Result = await userManager.CreateAsync(user, model.Password);
+            if (ModelState.IsValid)
+            {
+                var Result = await signInManager.PasswordSignInAsync(model.Email, model.Password, true, false); //True = Remember me , False = Lock the Account after 5 Times.
+                if (Result.Succeeded)
+                {
+                    return RedirectToAction("Create", "Upload");
+                }
+                else
+                {
+                    return View(model);
+                }
+            }
 
-				// We should Write This Code Because Don't Need Login Again
-				if (Result.Succeeded)
-				{
-					await signInManager.SignInAsync(user, false); //false = Remember me 
-					return RedirectToAction("Create", "Upload");
-				}
+            return View(model);
+        }
 
-				foreach (var error in Result.Errors)
-				{
-					ModelState.AddModelError("", error.Description);
-				}
-			}
-			return View(model);
-		}
+        #endregion
+
+        #region Register
 
 
-		[HttpGet]
-		public async Task<IActionResult> LogOut()
-		{
-			await signInManager.SignOutAsync();
-			return RedirectToAction("Index", "Home");
-		}
+        [HttpGet]
+        public IActionResult Register(string returnurl = null)
+        {
+            ViewData["ReturnUrl"] = returnurl;
+            var register = new RegistertViewModel();
+            return View(register);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegistertViewModel model , string returnurl = null)
+        {
+            ViewData["ReturnUrl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~");
+
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser()
+                {
+                    UserName = model.Email,
+                    Email = model.Email
+                };
+                var Result = await userManager.CreateAsync(user, model.Password);
+
+                // We should Write This Code Because Don't Need Login Again
+                if (Result.Succeeded)
+                {
+                    await signInManager.SignInAsync(user, false); //false = Remember me 
+                    return RedirectToAction("Create", "Upload");
+                }
+
+                foreach (var error in Result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(model);
+        }
+
+        #endregion
+
+        #region LogOut
 
 
-		#region External Login
-		public IActionResult ExternalLogin(string Provider) // Provider = "Facebook" , "Google"
-		{
-			var Properties = signInManager.ConfigureExternalAuthenticationProperties(Provider, "/Account/ExternalResponse");
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
 
-			return Challenge(Properties, Provider);
-		}
+        #endregion
+
+        #region External Login
+        public IActionResult ExternalLogin(string Provider) // Provider = "Face-book" , "Google"
+        {
+            var Properties = signInManager.ConfigureExternalAuthenticationProperties(Provider, "/Account/ExternalResponse");
+
+            return Challenge(Properties, Provider);
+        }
 
 
-		public async Task<IActionResult> ExternalResponse() // Provider = "Facebook" , "Google"
-		{
-			var logininfo = await signInManager.GetExternalLoginInfoAsync();
-			if (logininfo == null)
-			{
-				return RedirectToAction("Login");
-			}
+        public async Task<IActionResult> ExternalResponse() // Provider = "Face-book" , "Google"
+        {
+            var logininfo = await signInManager.GetExternalLoginInfoAsync();
+            if (logininfo == null)
+            {
+                return RedirectToAction("Login");
+            }
 
-			var loginResult = await signInManager.ExternalLoginSignInAsync(logininfo.LoginProvider, logininfo.ProviderKey, false);
-			if (!loginResult.Succeeded)
-			{
-				// Create Local Account
-				var email = logininfo.Principal.FindFirstValue(ClaimTypes.Email);
-				var firstName = logininfo.Principal.FindFirstValue(ClaimTypes.GivenName);
-				var lastName = logininfo.Principal.FindFirstValue(ClaimTypes.Surname);
+            var loginResult = await signInManager.ExternalLoginSignInAsync(logininfo.LoginProvider, logininfo.ProviderKey, false);
+            if (!loginResult.Succeeded)
+            {
+                // Create Local Account
+                var email = logininfo.Principal.FindFirstValue(ClaimTypes.Email);
+                var firstName = logininfo.Principal.FindFirstValue(ClaimTypes.GivenName);
+                var lastName = logininfo.Principal.FindFirstValue(ClaimTypes.Surname);
 
-				var UserToCreate = new IdentityUser
-				{
-					Email = email,
-					UserName = email
-				};
+                var UserToCreate = new IdentityUser
+                {
+                    Email = email,
+                    UserName = email
+                };
 
-				var CreateResult = await userManager.CreateAsync(UserToCreate);
-				if (CreateResult.Succeeded)
-				{
-					var ExLoginResult = await userManager.AddLoginAsync(UserToCreate, logininfo);
-					if (ExLoginResult.Succeeded)
-					{
-						await signInManager.SignInAsync(UserToCreate, false, logininfo.LoginProvider);
-						return RedirectToAction("Index", "Home");
-					}
-				}
-				return RedirectToAction("Login");
-			}
+                var CreateResult = await userManager.CreateAsync(UserToCreate);
+                if (CreateResult.Succeeded)
+                {
+                    var ExLoginResult = await userManager.AddLoginAsync(UserToCreate, logininfo);
+                    if (ExLoginResult.Succeeded)
+                    {
+                        await signInManager.SignInAsync(UserToCreate, false, logininfo.LoginProvider);
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                return RedirectToAction("Login");
+            }
 
-			return RedirectToAction("Index", "Home");
-		}
-		#endregion
+            return RedirectToAction("Index", "Home");
+        }
+        #endregion
 
-	}
+    }
 }

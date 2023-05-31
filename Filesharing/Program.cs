@@ -28,6 +28,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 #endregion
 
+
 #region Dependency injection
 
 builder.Services.AddTransient<IMailServices, MailServices>();
@@ -37,12 +38,24 @@ builder.Services.AddTransient<IUploadService, UploadService>();
 #endregion
 
 // Add Localization
+#region Localization
+
 builder.Services.AddLocalization();
 
+#endregion
+
+
 // AutoMapper
+#region AutoMapper
+
 builder.Services.AddAutoMapper(typeof(Program));
 
+#endregion
+
+
 // For Auth by Google And FaceBook
+#region Auth by Google And FaceBook
+
 builder.Services.AddAuthentication()
 	.AddGoogle(options =>
 	{
@@ -55,6 +68,8 @@ builder.Services.AddAuthentication()
 		options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
 
 	});
+
+#endregion
 
 var app = builder.Build();
 
@@ -74,6 +89,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // For Localization
+#region Localization
+
 var SupportedLecture = new[] { "ar-SA", "en-US" };
 app.UseRequestLocalization(reg =>  // "Ar-SA" , "en-US" , "fr-FR"
 {
@@ -82,6 +99,7 @@ app.UseRequestLocalization(reg =>  // "Ar-SA" , "en-US" , "fr-FR"
 	reg.SetDefaultCulture("en-US");
 });
 
+#endregion
 
 // For Account ( Register & Login ) 
 app.UseAuthentication();

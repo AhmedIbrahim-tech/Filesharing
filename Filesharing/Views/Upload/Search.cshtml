@@ -16,12 +16,12 @@
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="card mb-3">
+            <div class="card col-lg-12 mb-3">
                 <div class="row no-gutters">
                     <div class="col-md-4">
                         @if (ContentTypeArr.Contains(item.ContentType))
                         {
-                            <img width="70" height="70" src="~/Uploads/@item.FileName" class="img-thumbnail" alt="@item.OriginalFileName" />
+                            <img src="~/Uploads/@item.FileName" class="img-thumbnail" alt="@item.OriginalFileName" />
                         }
                         else{
                             <img src="~/img/File.png" width="70" height="70" class="img-thumbnail" alt="@item.OriginalFileName" />

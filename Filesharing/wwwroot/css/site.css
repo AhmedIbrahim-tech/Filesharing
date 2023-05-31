@@ -26,3 +26,19 @@ footer {
 .field-validation-error{
     color : red;
 }
+
+
+.mu-contact-content{
+    margin-bottom: 100px;
+}
+
+
+.navbar-ul{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar-auth{
+    width: 25%;
+}

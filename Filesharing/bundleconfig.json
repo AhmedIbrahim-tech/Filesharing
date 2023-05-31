@@ -16,7 +16,10 @@
 		"inputFiles": [
 			"wwwroot/assets/js/counter.js",
 			"wwwroot/assets/js/app.js",
-			"wwwroot/assets/js/custom.js"
+			"wwwroot/assets/js/custom.js",
+			"wwwroot/assets/js/slick.min.js",
+			"wwwroot/assets/js/jquery.filterizr.min.js",
+			"wwwroot/assets/js/jquery.magnific-popup.min.js"
 		],
 		"minify": { "enabled": true },
 		"sourceMap": false

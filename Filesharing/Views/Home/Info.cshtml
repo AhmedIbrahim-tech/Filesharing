@@ -3,8 +3,41 @@
     ViewData["Title"] = "Personal Information";
 }
 
-<h2>@ViewData["Title"]</h2>
-<hr />
+@* <h2>@ViewData["Title"]</h2> *@
+
+
+	<!-- Start Page Header area -->
+	<div id="mu-page-header" >
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="mu-page-header-area">
+						<h1 class="mu-page-header-title">Information</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Page Header area -->
+
+	<!-- Start Breadcrumb -->
+	<div id="mu-breadcrumb" style="margin-bottom:1%">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<nav aria-label="breadcrumb" role="navigation">
+					  <ol class="breadcrumb mu-breadcrumb">
+					    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Information</a></li>
+					    <li class="breadcrumb-item active" aria-current="page">Information</li>
+					  </ol>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Breadcrumb -->
+
+<div class="container">
 
 <p>
     <strong> Logged in user </strong> : <span> @User.Identity.Name </span>
@@ -16,3 +49,5 @@
 <a class="btn btn-outline-primary">
     Change Password
 </a>
+
+</div>

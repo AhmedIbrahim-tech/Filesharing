@@ -1466,7 +1466,7 @@ a:focus,
 
 #mu-footer {
 	background-color: #fff;
-	display: inline;
+	/* display: inline; */
 	float: left;
 	width: 100%;
 	bottom:0;

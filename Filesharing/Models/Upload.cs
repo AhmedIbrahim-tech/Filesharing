@@ -16,20 +16,20 @@
         public int ID { get; set; }
 
         [Display(Name = "Original File Name")]
-        public string? OriginalFileName { get; set; }
+        public string OriginalFileName { get; set; }
 
         [Display(Name = "File Name")]
-        public string? FileName { get; set; }
+        public string FileName { get; set; }
 
         [Display(Name = "Content Type")]
-        public string? ContantType { get; set; }
+        public string ContentType { get; set; }
         public decimal Size { get; set; }
 
         [Display(Name = "Upload Date")]
         public DateTime UploadDate { get; set; }   = DateTime.Now;
 
         [Display(Name = "User")]
-        public string? UserId { get; set; }
+        public string UserId { get; set; }
 
         // To get All Uploads by User Id
         public IdentityUser? User { get; set; }
