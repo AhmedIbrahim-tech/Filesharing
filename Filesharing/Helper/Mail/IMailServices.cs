@@ -2,6 +2,6 @@
 {
     public interface IMailServices
     {
-        void SendMail(InputEmailMessage model);
+        void SendMail(EmailBody model);
     }
 }

@@ -10,7 +10,7 @@ namespace Filesharing.Helper.Mail
         {
             this.config = config;
         }
-        public void SendMail(InputEmailMessage model)
+        public void SendMail(EmailBody model)
         {
             // Get Host and Port 
             using (SmtpClient client = new SmtpClient(config.GetValue<string>("Mail:Host"), config.GetValue<int>("Mail:Port")))

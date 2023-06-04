@@ -97,7 +97,7 @@ namespace Filesharing.Controllers
                 Sb.AppendFormat("Message : {0} ", modal.Message);
 
                 // Send Email
-                mailServices.SendMail(new InputEmailMessage
+                mailServices.SendMail(new EmailBody
                 {
                     Subject = "You have Unread Message",
                     Email = "ebrahema89859@gmail.com",

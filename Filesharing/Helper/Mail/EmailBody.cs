@@ -1,6 +1,6 @@
 ﻿namespace Filesharing.Helper.Mail
 {
-    public class InputEmailMessage
+    public class EmailBody
     {
         public string Email { get; set; }
         public string Subject { get; set; }
