@@ -105,11 +105,15 @@ app.UseRequestLocalization(reg =>  // "Ar-SA" , "en-US" , "fr-FR"
 app.UseAuthentication();
 app.UseAuthorization();
 
+#region Database.Migrate
+
 using (var scope = app.Services.CreateScope())
 {
 	var db = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
 	db.Database.Migrate();
 }
+
+#endregion
 
 app.MapControllerRoute(
 	name: "default",
