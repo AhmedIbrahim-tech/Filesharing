@@ -26,10 +26,11 @@ namespace Filesharing.Services.Repository
         #endregion
 
         #region Get All Uploads
-        public IEnumerable<UploadViewModel> GetAllUploadsAsync()
+        public IQueryable<UploadViewModel> GetAllUploads()
         {
-            var Model = db.Uploads
-                    .OrderByDescending(u => u.DownloadCount).ProjectTo<UploadViewModel>(_mapper.ConfigurationProvider);
+            var result = db.Uploads
+                    .OrderByDescending(u => u.DownloadCount)
+                    .ProjectTo<UploadViewModel>(_mapper.ConfigurationProvider); // → ProjectTo comes from AutoMapper
             //.Select(u => new UploadViewModel
             //{
             //	FileName = u.FileName,
@@ -38,17 +39,17 @@ namespace Filesharing.Services.Repository
             //	OriginalFileName = u.OriginalFileName,
             //	DownloadCount = u.DownloadCount,
             //}).ToListAsync();
-            return Model;
+            return result;
         }
 
         #endregion
 
         #region Get All Uploads by UserID
 
-        public IEnumerable<UploadViewModel> GetAllUploadsbyUserIDAsync(string userId)
+        public IQueryable<UploadViewModel> GetAllUploadsbyUserID(string userId)
         {
             var result = db.Uploads.Where(x => x.UserId == userId).OrderByDescending(a => a.UploadDate)
-                .ProjectTo<UploadViewModel>(_mapper.ConfigurationProvider);
+                .ProjectTo<UploadViewModel>(_mapper.ConfigurationProvider); // → ProjectTo comes from AutoMapper
             return result;
         }
 
@@ -59,10 +60,13 @@ namespace Filesharing.Services.Repository
         public IEnumerable<UploadViewModel> Search(string term)
         {
             var Model = db.Uploads
-                          .Where(U => U.OriginalFileName.Contains(term)
-                            || U.FileName.Contains(term) || U.ContentType.Contains(term))
+                          .Where(
+                            U => U.OriginalFileName.Contains(term) || 
+                            U.FileName.Contains(term) || 
+                            U.ContentType.Contains(term)
+                            )
                           .OrderByDescending(x => x.DownloadCount)
-                          .ProjectTo<UploadViewModel>(_mapper.ConfigurationProvider);
+                          .ProjectTo<UploadViewModel>(_mapper.ConfigurationProvider); // → ProjectTo comes from AutoMapper
             return Model;
         }
 
@@ -70,7 +74,7 @@ namespace Filesharing.Services.Repository
 
         #region Create
 
-        public async Task Create(InputUpload model)
+        public async Task CreateAsync(InputUpload model)
         {
             var MapperObj = _mapper.Map<Upload>(model);
             //var inputupload = new Upload()
@@ -91,7 +95,7 @@ namespace Filesharing.Services.Repository
 
         #region Delete
 
-        public async Task Delete(int id, string userid)
+        public async Task DeleteAsync(int id, string userid)
         {
             try
             {
@@ -114,7 +118,7 @@ namespace Filesharing.Services.Repository
 
         #region Find By (Id , user-id)
 
-        public async Task<UploadViewModel> Find(int id, string userid)
+        public async Task<UploadViewModel> FindAsync(int id, string userid)
         {
             // This's Code Be., Not AnyOne Delete Item From Another User 
             var SelectedItem = await db.Uploads.FirstOrDefaultAsync(x => x.ID == id && x.UserId == userid);
@@ -139,7 +143,7 @@ namespace Filesharing.Services.Repository
 
 
 
-        public async Task<UploadViewModel> Find(string id)
+        public async Task<UploadViewModel> FindAsync(string id)
         {
             // This's Code Be., Not AnyOne Delete Item From Another User 
             var SelectedItem = await db.Uploads.FirstOrDefaultAsync(x=>x.FileName == id);
@@ -166,7 +170,7 @@ namespace Filesharing.Services.Repository
 
         #region Increment Download Count
 
-        public async Task IncreamentDownloadCount(string id)
+        public async Task IncreamentDownloadCountAsync(string id)
         {
             var SelectedItem = await db.Uploads.FirstOrDefaultAsync(x => x.FileName == id);
             if (SelectedItem != null)
@@ -177,20 +181,18 @@ namespace Filesharing.Services.Repository
                 db.Update(SelectedItem);
                 await db.SaveChangesAsync();
             }
-
         }
 
         #endregion
 
         #region GetUploadCount
 
-        public async Task<int> GetUploadCount()
+        public async Task<int> GetUploadCountAsync()
         {
             return await db.Uploads.CountAsync();
         }
 
         #endregion
-
 
         #region
 

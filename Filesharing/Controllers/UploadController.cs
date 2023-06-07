@@ -1,4 +1,5 @@
-﻿using Filesharing.Services.Interface;
+﻿#region Constructor
+using Filesharing.Services.Interface;
 using Microsoft.AspNetCore.Hosting;
 
 namespace Filesharing.Controllers
@@ -15,14 +16,14 @@ namespace Filesharing.Controllers
 			webHostEnvironment = WebHostEnvironment;
 		}
 
-
+        #endregion
+        
         #region Index (To_Get_Upload_By_UserID)
 
         public IActionResult Index()
         {
-            //var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //var result = db.GetAllUploadsbyUserIDAsync(userid);
-            return View(db.GetAllUploadsbyUserIDAsync(userid));
+            var result = db.GetAllUploadsbyUserID(userid);
+            return View(result);
         }
         #endregion
 
@@ -32,8 +33,9 @@ namespace Filesharing.Controllers
         [AllowAnonymous]
         public IActionResult Browse()
         {
-            return
-               View(db.GetAllUploadsAsync());
+            var result = db.GetAllUploads();
+            return View(result);
+
         }
         #endregion
 
@@ -42,11 +44,11 @@ namespace Filesharing.Controllers
         [HttpGet]
         public async Task<IActionResult> Download(string id)
         {
-            var selectedFile = await db.Find(id);
+            var selectedFile = await db.FindAsync(id);
             
             if (selectedFile == null) { return NotFound(); }
 
-            await db.IncreamentDownloadCount(id);
+            await db.IncreamentDownloadCountAsync(id);
 
             var path = "~/Uploads/" + selectedFile.FileName;
 
@@ -98,7 +100,7 @@ namespace Filesharing.Controllers
                     UserId = userid,
                 };
 
-                await db.Create(inputupload);
+                await db.CreateAsync(inputupload);
                 return RedirectToAction("Index");
             }
             return View(model);
@@ -108,7 +110,7 @@ namespace Filesharing.Controllers
 
         #region Edit
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View();
         }
@@ -121,7 +123,7 @@ namespace Filesharing.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             // This's Code Be., Not AnyOne Delete Item From Another User 
-            var selecteditem = await db.Find(id , userid);
+            var selecteditem = await db.FindAsync(id , userid);
             if (selecteditem == null)
             {
                 return NotFound();
@@ -133,7 +135,7 @@ namespace Filesharing.Controllers
         [ActionName("Delete")]
         public async Task<IActionResult> ConfirmDelete(int id)
         {
-            await db.Delete(id, userid);
+            await db.DeleteAsync(id, userid);
             
             return RedirectToAction("Index");
         }

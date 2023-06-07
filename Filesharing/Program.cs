@@ -31,9 +31,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 #region Dependency injection
 
-builder.Services.AddTransient<IMailServices, MailServices>();
+builder.Services.AddScoped<IMailServices, MailServices>();
 
-builder.Services.AddTransient<IUploadService, UploadService>();
+builder.Services.AddScoped<IUploadService, UploadService>();
 
 #endregion
 
@@ -48,7 +48,7 @@ builder.Services.AddLocalization();
 // AutoMapper
 #region AutoMapper
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 #endregion
 
