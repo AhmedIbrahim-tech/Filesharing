@@ -32,7 +32,7 @@
         public string UserId { get; set; }
 
         // To get All Uploads by User Id
-        public IdentityUser? User { get; set; }
+        public IdentityUser User { get; set; }
 
         public long DownloadCount { get; set; }
     }
