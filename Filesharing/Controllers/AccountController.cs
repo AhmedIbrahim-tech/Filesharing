@@ -6,12 +6,12 @@ namespace Filesharing.Controllers
 
     public class AccountController : Controller
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<IdentityUser> userManager;
 
         public AccountController(
-            SignInManager<ApplicationUser> signInManager,  // We Use with Login
-            UserManager<ApplicationUser> userManager       // We Use with Register
+            SignInManager<IdentityUser> signInManager,  // We Use with Login
+            UserManager<IdentityUser> userManager       // We Use with Register
             )
         {
             this.signInManager = signInManager;
@@ -64,14 +64,14 @@ namespace Filesharing.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegistertViewModel model , string returnurl = null)
+        public async Task<IActionResult> Register(RegistertViewModel model, string returnurl = null)
         {
             ViewData["ReturnUrl"] = returnurl;
             returnurl = returnurl ?? Url.Content("~");
 
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser()
+                var user = new IdentityUser()
                 {
                     UserName = model.Email,
                     Email = model.Email
@@ -132,7 +132,7 @@ namespace Filesharing.Controllers
                 var firstName = logininfo.Principal.FindFirstValue(ClaimTypes.GivenName);
                 var lastName = logininfo.Principal.FindFirstValue(ClaimTypes.Surname);
 
-                var UserToCreate = new ApplicationUser
+                var UserToCreate = new IdentityUser
                 {
                     Email = email,
                     UserName = email
@@ -154,6 +154,42 @@ namespace Filesharing.Controllers
             return RedirectToAction("Index", "Home");
         }
         #endregion
+
+        #region Chnage Password
+
+
+        [HttpPost]
+        public async Task<IActionResult> ChnagePassword(changePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cuurentUser = await userManager.GetUserAsync(User);
+                if (cuurentUser == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    var result = await userManager.ChangePasswordAsync(cuurentUser, model.CurrentPassword, model.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        RedirectToAction("Info", "Home");
+                    }
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        #endregion
+
 
     }
 }

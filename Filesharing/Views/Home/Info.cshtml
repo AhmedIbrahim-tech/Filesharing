@@ -44,10 +44,6 @@
 </p>
 <br />
 
-<h2> Manage </h2>
-
-<a class="btn btn-outline-primary">
-    Change Password
-</a>
+@{await Html.RenderPartialAsync("_changePassword.cshtml" , new changePasswordViewModel());}
 
 </div>

@@ -18,7 +18,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(option =>
 		builder.Configuration.GetConnectionString("DefaultConnection"),
 			b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
 	options.Password.RequiredLength = 6;
 	options.Password.RequireLowercase = true;
