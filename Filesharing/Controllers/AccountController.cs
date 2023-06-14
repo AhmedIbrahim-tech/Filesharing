@@ -6,12 +6,12 @@ namespace Filesharing.Controllers
 
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public AccountController(
-            SignInManager<IdentityUser> signInManager,  // We Use with Login
-            UserManager<IdentityUser> userManager       // We Use with Register
+            SignInManager<ApplicationUser> signInManager,  // We Use with Login
+            UserManager<ApplicationUser> userManager       // We Use with Register
             )
         {
             this.signInManager = signInManager;
@@ -71,7 +71,7 @@ namespace Filesharing.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser()
+                var user = new ApplicationUser()
                 {
                     UserName = model.Email,
                     Email = model.Email
@@ -132,7 +132,7 @@ namespace Filesharing.Controllers
                 var firstName = logininfo.Principal.FindFirstValue(ClaimTypes.GivenName);
                 var lastName = logininfo.Principal.FindFirstValue(ClaimTypes.Surname);
 
-                var UserToCreate = new IdentityUser
+                var UserToCreate = new ApplicationUser
                 {
                     Email = email,
                     UserName = email
