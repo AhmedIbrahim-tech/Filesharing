@@ -29,7 +29,7 @@ Here, you will learn variety of technologies like
 
 Below, I have Pasted the high level glimpse project structure.
 
-![14th](https://user-images.githubusercontent.com/3886381/80864879-4f869780-8ca3-11ea-80b1-01481a1c895e.png)
+![14th](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/project%20structure.PNG)
 
 
 
@@ -55,29 +55,11 @@ This project is built using asp.net core.
 
 ## Peek from the workshop
 
-Demo Link:- https://sports-center.azurewebsites.net/
+![1st](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/Home.jpg)
 
-![1st]
+![2nd](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/Browse.jpg)
 
-![2nd]
+![3rd](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/Contact.jpg)
 
-![3rd]
-
-![4th]
-
-![5th]
-
-![6th]
-
-![7th]
-
-![8th]
-
-![9th]
-
-![10th]
-
-![11th]
-
-![12th]
+![4th](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/Login.jpg)
 
