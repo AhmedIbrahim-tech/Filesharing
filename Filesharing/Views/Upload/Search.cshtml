@@ -26,46 +26,45 @@
     }
     else
     {
-        <div class="row g-4 justify-content-center">
+        <div class="download-grid">
             @foreach (var item in Model)
             {
-                <div class="col-xl-3 col-lg-4 col-md-6 animate__animated animate__fadeInUp">
-                    <div class="download-card h-100 d-flex flex-column">
-                        <div class="card-icon mb-3">
-                            @if (ContentTypeArr.Contains(item.ContentType))
-                            {
-                                <img src="~/Uploads/@item.FileName" class="card-thumbnail" alt="@item.OriginalFileName" />
-                            }
-                            else
-                            {
-                                var fileExt = System.IO.Path.GetExtension(item.OriginalFileName).ToLower();
-                                var iconClass = fileExt switch {
-                                    ".pdf" => "bi-file-pdf pdf",
-                                    ".zip" or ".rar" => "bi-file-zip zip",
-                                    ".doc" or ".docx" => "bi-file-word doc",
-                                    ".xls" or ".xlsx" => "bi-file-excel xls",
-                                    ".txt" => "bi-file-text txt",
-                                    _ => "bi-file-earmark"
-                                };
-                                
-                                <div class="card-icon @iconClass.Split(' ').Last()">
-                                    <i class="bi @iconClass.Split(' ').First()"></i>
-                                </div>
-                            }
-                        </div>
+                <div class="download-card animate__animated animate__fadeInUp">
+                    @if (ContentTypeArr.Contains(item.ContentType))
+                    {
+                        <img src="~/Uploads/@item.FileName" class="card-thumbnail" alt="@item.OriginalFileName" />
+                    }
+                    else
+                    {
+                        var fileExt = System.IO.Path.GetExtension(item.OriginalFileName).ToLower();
+                        var iconClass = fileExt switch {
+                            ".pdf" => "bi-file-pdf pdf",
+                            ".zip" or ".rar" => "bi-file-zip zip",
+                            ".doc" or ".docx" => "bi-file-word doc",
+                            ".xls" or ".xlsx" => "bi-file-excel xls",
+                            ".txt" => "bi-file-text txt",
+                            _ => "bi-file-earmark"
+                        };
                         
-                        <h5 class="card-title text-truncate mb-1" title="@item.OriginalFileName">@item.OriginalFileName</h5>
-                        <p class="text-muted small mb-3">@((item.Size / 1024).ToString("F2")) KB • @item.UploadDate.ToShortDateString()</p>
-                        
-                        <div class="mt-auto pt-3 border-top border-secondary d-flex justify-content-between align-items-center" style="border-top-color: var(--border) !important;">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-download text-primary mr-1 small"></i>
-                                <span class="text-muted small">@item.DownloadCount</span>
-                            </div>
-                            <a asp-controller="Upload" asp-action="Download" asp-route-id="@item.FileName" class="btn btn-primary-modern btn-modern btn-sm rounded-circle p-2" style="width: 40px; height: 40px;">
-                                <i class="bi bi-download"></i>
-                            </a>
+                        <div class="card-icon @iconClass.Split(' ').Last()">
+                            <i class="bi @iconClass.Split(' ').First()"></i>
                         </div>
+                    }
+
+                    <div class="card-info">
+                        <h3 class="mb-2 text-truncate" title="@item.OriginalFileName">@item.OriginalFileName</h3>
+                        <div class="d-flex align-items-center gap-3 card-meta mb-3">
+                            <span><i class="bi bi-cloud-download me-1"></i> @item.DownloadCount</span>
+                            <span><i class="bi bi-hdd me-1"></i> @((item.Size / 1024).ToString("F2")) KB</span>
+                            <span><i class="bi bi-calendar3 me-1"></i> @item.UploadDate.ToShortDateString()</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-3 border-top border-secondary d-flex justify-content-between align-items-center" style="border-top-color: var(--border) !important;">
+                        <span class="text-muted small">@Localizer["shared by"] <span class="text-primary font-weight-bold">@Localizer["Community"]</span></span>
+                        <a asp-controller="Upload" asp-action="Download" asp-route-id="@item.FileName" class="btn btn-primary-modern btn-modern btn-sm rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                            <i class="bi bi-download" style="font-size: 1.1rem;"></i>
+                        </a>
                     </div>
                 </div>
             }

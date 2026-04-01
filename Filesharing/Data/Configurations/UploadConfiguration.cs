@@ -25,8 +25,7 @@ public class UploadConfiguration : IEntityTypeConfiguration<Upload>
         builder.Property(x => x.Size)
             .HasColumnType("decimal(18,2)");
 
-        builder.Property(x => x.UserId)
-            .IsRequired();
+        builder.Property(x => x.UserId);
 
         builder.HasOne(x => x.User)
             .WithMany()

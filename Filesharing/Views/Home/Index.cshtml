@@ -35,20 +35,19 @@
 </section>
 
 <div class="container py-5 mt-5">
-    <div class="row mb-4 align-items-center">
-        <div class="col-6">
-        <div>
-            <h2 class="font-weight-bold mb-1" style="font-size: 2rem;">
-                <i class="bi bi-stars text-primary mr-2"></i> @Localizer["Popular Downloads"]
-            </h2>
-            <p class="text-muted mb-0">Trending files most downloaded by the community right now.</p>
-        </div>
-        </div>
-        <div class="col-6 text-right">
-        <a asp-action="Browse" asp-controller="Upload" class="btn btn-outline-modern btn-modern rounded-pill btn-sm">
-            @Localizer["View All"] <i class="bi bi-chevron-right ml-1"></i>
+<div class="row mb-5 align-items-center animate__animated animate__fadeIn">
+    <div class="col-md-8">
+        <h2 class="font-weight-bold mb-1" style="font-size: 2.2rem;">
+            <i class="bi bi-stars text-primary me-2"></i> @Localizer["Popular Downloads"]
+        </h2>
+        <p class="text-muted mb-0">Trending files most downloaded by the community right now.</p>
+    </div>
+    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <a asp-action="Browse" asp-controller="Upload" class="btn btn-primary-modern btn-modern rounded-pill px-4">
+            @Localizer["View All"] <i class="bi bi-arrow-right-short ms-1" style="font-size: 1.2rem;"></i>
         </a>
     </div>
+</div>
 
     <div class="download-grid">
         @foreach (UploadViewModel item in ViewBag.popular)
@@ -84,9 +83,9 @@
                 </div>
 
                     <div class="mt-auto pt-3 border-top border-secondary d-flex justify-content-between align-items-center" style="border-top-color: var(--border) !important;">
-                        <span class="text-muted small">@Localizer["shared by"] <span class="text-primary">@Localizer["Community"]</span></span>
-                        <a asp-controller="Upload" asp-action="Download" asp-route-id="@item.FileName" class="btn btn-primary-modern btn-modern btn-sm rounded-circle p-2" style="width: 40px; height: 40px;">
-                            <i class="bi bi-download"></i>
+                        <span class="text-muted small">@Localizer["shared by"] <span class="text-primary font-weight-bold">@Localizer["Community"]</span></span>
+                        <a asp-controller="Upload" asp-action="Download" asp-route-id="@item.FileName" class="btn btn-primary-modern btn-modern btn-sm rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                            <i class="bi bi-download" style="font-size: 1.1rem;"></i>
                         </a>
                     </div>
             </div>

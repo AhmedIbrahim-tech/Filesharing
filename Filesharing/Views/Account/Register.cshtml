@@ -76,4 +76,18 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function togglePassword(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const eyeIcon = document.getElementById(iconId);
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.replace('bi-eye', 'bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        }
+    </script>
 }

@@ -29,11 +29,14 @@ app.UseRequestLocalization(options =>
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Auto-run migrations on startup
+// Auto-run migrations and seeds on startup
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
     db.Database.Migrate();
+
+    // Call Seeder
+    await Filesharing.Helper.DataSeeder.SeedAsync(scope.ServiceProvider);
 }
 
 app.MapControllerRoute(

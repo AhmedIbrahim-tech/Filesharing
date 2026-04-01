@@ -134,6 +134,7 @@ main {
 .mu-logo span {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 800;
     font-size: 1.5rem;
@@ -205,19 +206,26 @@ main {
     width: 100%;
     padding: 1.25rem 1.5rem 1.25rem 3.5rem;
     border-radius: 9999px;
-    background: var(--bg-surface);
+    background: rgba(15, 23, 42, 0.6) !important;
+    backdrop-filter: blur(8px);
     border: 1px solid var(--border);
-    color: var(--text-main);
+    color: #ffffff !important;
     font-size: 1.1rem;
+    font-weight: 500;
     transition: all 0.3s ease;
     box-shadow: var(--shadow-lg);
+}
+
+.search-container input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .search-container input:focus {
     outline: none;
     border-color: var(--primary);
-    background: var(--bg-card);
+    background: rgba(15, 23, 42, 0.8) !important;
     box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+    color: #ffffff !important;
 }
 
 .search-icon {
@@ -381,6 +389,7 @@ main {
 .text-gradient {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -389,7 +398,7 @@ main {
         font-size: 2.75rem;
     }
 }
-@charset \ UTF-8\;
+
 
 /* Scroll to Top */
 .scrollToTop {

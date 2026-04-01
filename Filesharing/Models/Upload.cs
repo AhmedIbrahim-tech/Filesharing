@@ -8,7 +8,7 @@ public class Upload
     public string ContentType { get; set; } = null!;
     public decimal Size { get; set; }
     public DateTime UploadDate { get; set; } = DateTime.Now;
-    public string UserId { get; set; } = null!;
+    public string? UserId { get; set; }
     public IdentityUser? User { get; set; }
     public long DownloadCount { get; set; }
 }
