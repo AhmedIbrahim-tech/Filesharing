@@ -10,3 +10,4 @@ global using Filesharing.Data;
 global using System.Security.Claims;
 global using Filesharing.Helper.Mail;
 global using Filesharing.Helper.Resources;
+global using Filesharing.Services;

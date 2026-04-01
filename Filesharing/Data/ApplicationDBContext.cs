@@ -1,17 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Filesharing.Models;
+using System.Reflection;
 
-namespace Filesharing.Data
+namespace Filesharing.Data;
+
+public class ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : IdentityDbContext<IdentityUser>(options)
 {
-    public class ApplicationDBContext : IdentityDbContext<IdentityUser>
+    public DbSet<Upload> Uploads { get; set; }
+
+    public DbSet<Contact> Contacts { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
-        {
-        }
+        base.OnModelCreating(builder);
 
-        public DbSet<Upload> Uploads { get; set; }
-
-        public DbSet<Contact> Contacts { get; set; }
-        
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

@@ -1,35 +1,45 @@
+using System.Net;
 using System.Net.Mail;
 
-namespace Filesharing.Helper.Mail
+namespace Filesharing.Helper.Mail;
+
+public interface IMailServices
 {
-    public class MailServices : IMailServices
+    Task SendMailAsync(EmailBody model);
+}
+
+public class MailServices(IConfiguration config, ILogger<MailServices> logger) : IMailServices
+{
+    public async Task SendMailAsync(EmailBody model)
     {
-        private readonly IConfiguration config;
+        try
+        {
+            var host = config.GetValue<string>("MailSettings:Host");
+            var port = config.GetValue<int>("MailSettings:Port");
+            var fromEmail = config.GetValue<string>("MailSettings:FromEmail") ?? string.Empty;
+            var fromDisplayName = config.GetValue<string>("MailSettings:SenderName") ?? "FileSharing System";
+            var password = config.GetValue<string>("MailSettings:Password") ?? string.Empty;
 
-        public MailServices(IConfiguration config)
-        {
-            this.config = config;
-        }
-        public void SendMail(EmailBody model)
-        {
-            // Get Host and Port 
-            using (SmtpClient client = new SmtpClient(config.GetValue<string>("Mail:Host"), config.GetValue<int>("Mail:Port")))
+            using var client = new SmtpClient(host, port)
             {
-                // Body Of Mail 
-                var Msg = new MailMessage();
-                Msg.To.Add(model.Email);                    // Get Mail Of Sender 
-				Msg.Subject = model.Subject;
-                Msg.Body = model.Body;
-                Msg.From = new MailAddress(config.GetValue<string>("Mail:From") ?? string.Empty, config.GetValue<string>("Mail:Sender") ?? string.Empty, System.Text.Encoding.UTF8);
+                Credentials = new NetworkCredential(fromEmail, password),
+                EnableSsl = true // SMTP usually needs SSL
+            };
 
-                // To Accept Html 
-                Msg.IsBodyHtml = true;
+            var message = new MailMessage
+            {
+                Subject = model.Subject,
+                Body = model.Body,
+                IsBodyHtml = true,
+                From = new MailAddress(fromEmail, fromDisplayName, System.Text.Encoding.UTF8)
+            };
+            message.To.Add(model.Email);
 
-                // Get Mail and Password that Send to it [ebrahema89859@gmail.com , Password]
-                client.Credentials = new System.Net.NetworkCredential(config.GetValue<string>("Mail:From") ?? string.Empty, config.GetValue<string>("Mail:PWD") ?? string.Empty);
-                client.Send(Msg);
-
-            }
+            await client.SendMailAsync(message);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to send email to {Email}", model.Email);
         }
     }
 }

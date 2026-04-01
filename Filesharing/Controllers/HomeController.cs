@@ -1,36 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using System.Diagnostics;
 using System.Text;
 
 namespace Filesharing.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(ILogger<HomeController> logger, ApplicationDBContext db, IMailServices mailServices) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDBContext db;
-        private readonly IMailServices mailServices;
-
-        public HomeController(ILogger<HomeController> logger , ApplicationDBContext db , IMailServices mailServices)
-        {
-            _logger = logger;
-            this.db = db;
-            this.mailServices = mailServices;
-        }
-
-        private string userid
-        {
-            get
-            {
-                return User.FindFirstValue(ClaimTypes.NameIdentifier);
-            }
-        }
-
         public IActionResult Index()
         {
-            #region To_Get_Upload_By_UserID
-
-            var highDownloads = db.Uploads.OrderByDescending( u => u.DownloadCount).Take(3)
+            var popularUploads = db.Uploads
+                .OrderByDescending(u => u.DownloadCount)
+                .Take(3)
                 .Select(u => new UploadViewModel
                 {
                     ID = u.ID,
@@ -40,102 +20,83 @@ namespace Filesharing.Controllers
                     OriginalFileName = u.OriginalFileName,
                     DownloadCount = u.DownloadCount,
                 });
-            ViewBag.popular = highDownloads;
-            return View();
 
-            #endregion
-
-        }
-
-        public IActionResult Privacy()
-        {
+            ViewBag.Popular = popularUploads;
             return View();
         }
 
-        public IActionResult Info()
-        {
-            return View();
-        }
-
-        public IActionResult About()
-        {
-            return View();
-        }
+        public IActionResult Privacy() => View();
+        public IActionResult Info() => View();
+        public IActionResult About() => View();
 
         [HttpGet]
-        public IActionResult Contact()
-        {
-            return View();
-        }
-        
+        public IActionResult Contact() => View();
+
         [HttpPost]
-        public async Task<IActionResult> Contact(ContactViewModal modal)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contact(ContactViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var contactEntry = new Contact
             {
-                var Contact = new Contact
-                {
-                    Email = modal.Email,
-                    Name = modal.Name,
-                    Message = modal.Message,
-                    Subject = modal.Subject,
-                    UserId = userid
-                };
+                Email = model.Email,
+                Name = model.Name,
+                Message = model.Message,
+                Subject = model.Subject,
+                UserId = CurrentUserId
+            };
 
-                db.Contacts.Add(Contact) ;
-                await db.SaveChangesAsync();
-                TempData["Message"] = "Message has been Successful";
+            await db.Contacts.AddAsync(contactEntry);
+            await db.SaveChangesAsync();
 
-                #region Send_Email
-                // build Body To Email
-                StringBuilder Sb = new StringBuilder();
-                Sb.AppendLine("<h1> File Sharing - Unread Message </h1>");
-                Sb.AppendFormat("Name : {0}", modal.Name);
-                Sb.AppendFormat("Email : {0} ", modal.Email);
-                Sb.AppendLine();
-                Sb.AppendFormat("Subject : {0} ", modal.Subject);
-                Sb.AppendFormat("Message : {0} ", modal.Message);
+            TempData["Message"] = "Your message has been sent successfully!";
 
-                // Send Email
-                mailServices.SendMail(new EmailBody
-                {
-                    Subject = "You have Unread Message",
-                    Email = "ebrahema89859@gmail.com",
-                    Body = Sb.ToString()
-                });
+            // Prepare and send notification email
+            var emailBody = new StringBuilder();
+            emailBody.AppendLine("<h1>FileSharing - New Contact Message</h1>");
+            emailBody.AppendFormat("<p><strong>Name:</strong> {0}</p>", model.Name);
+            emailBody.AppendFormat("<p><strong>Email:</strong> {0}</p>", model.Email);
+            emailBody.AppendFormat("<p><strong>Subject:</strong> {0}</p>", model.Subject);
+            emailBody.AppendFormat("<p><strong>Message:</strong></p><p>{0}</p>", model.Message);
 
-                #endregion
+            await mailServices.SendMailAsync(new EmailBody
+            {
+                Subject = $"New Message: {model.Subject}",
+                Email = "ebrahema89859@gmail.com",
+                Body = emailBody.ToString()
+            });
 
-                return RedirectToAction("Contact");
-            }
-            return View(modal);
+            return RedirectToAction(nameof(Contact));
         }
 
         [HttpGet]
-        public ActionResult SetLang(string Lang , string returnUrl = null)
+        public IActionResult SetLang(string lang, string returnUrl = null)
         {
-            if (!string.IsNullOrEmpty(Lang))
+            if (!string.IsNullOrEmpty(lang))
             {
                 Response.Cookies.Append(
                     CookieRequestCultureProvider.DefaultCookieName,
-                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(Lang)),
-                    new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1)}
+                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(lang)),
+                    new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
                 );
             }
 
+            if (!string.IsNullOrEmpty(returnUrl))
+            {
+                return LocalRedirect(returnUrl);
+            }
 
-			if (!string.IsNullOrEmpty(returnUrl))
-			{
-				return LocalRedirect(returnUrl);
-			}
-
-			return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
-        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        private string CurrentUserId => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
     }
-}
+}

@@ -1,39 +1,14 @@
-namespace Filesharing.Models
+namespace Filesharing.Models;
+
+public class Upload
 {
-    public class Upload
-    {
-        /*
-         * To Make ID is index Number And Primary Key
-         * 
-         * public string ID { get; set; }
-            public Upload()
-            {
-                ID = Guid.NewGuid().ToString();
-            }
-        */
-        
-        [Key]
-        public int ID { get; set; }
-
-        [Display(Name = "Original File Name")]
-        public string OriginalFileName { get; set; } = null!;
-
-        [Display(Name = "File Name")]
-        public string FileName { get; set; } = null!;
-
-        [Display(Name = "Content Type")]
-        public string ContentType { get; set; } = null!;
-        public decimal Size { get; set; }
-
-        [Display(Name = "Upload Date")]
-        public DateTime UploadDate { get; set; }   = DateTime.Now;
-
-        [Display(Name = "User")]
-        public string UserId { get; set; } = null!;
-
-        // To get All Uploads by User Id
-        public IdentityUser? User { get; set; }
-
-        public long DownloadCount { get; set; }
-    }
+    public int ID { get; set; }
+    public string OriginalFileName { get; set; } = null!;
+    public string FileName { get; set; } = null!;
+    public string ContentType { get; set; } = null!;
+    public decimal Size { get; set; }
+    public DateTime UploadDate { get; set; } = DateTime.Now;
+    public string UserId { get; set; } = null!;
+    public IdentityUser? User { get; set; }
+    public long DownloadCount { get; set; }
 }

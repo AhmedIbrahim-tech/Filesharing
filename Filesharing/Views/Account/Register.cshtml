@@ -1,4 +1,4 @@
-@model RegistertViewModel
+@model RegisterViewModel
 @{
     ViewData["Title"] = "Register";
 }
@@ -51,12 +51,12 @@
                         <label class="text-muted small mb-2 ml-2">Confirm Password</label>
                         <div class="position-relative">
                             <i class="bi bi-shield-check position-absolute text-primary" style="left: 1.5rem; top: 50%; transform: translateY(-50%);"></i>
-                            <input type="password" id="confirmPasswordInput" asp-for="ComfirmPassword" class="form-control rounded-pill bg-dark border-0 pl-5 text-white" style="background: rgba(2, 6, 23, 0.5) !important; padding: 1.25rem 4rem 1.25rem 3.5rem;" placeholder="Repeat your password" required>
+                            <input type="password" id="confirmPasswordInput" asp-for="ConfirmPassword" class="form-control rounded-pill bg-dark border-0 pl-5 text-white" style="background: rgba(2, 6, 23, 0.5) !important; padding: 1.25rem 4rem 1.25rem 3.5rem;" placeholder="Repeat your password" required>
                              <button type="button" onclick="togglePassword('confirmPasswordInput', 'confirmEyeIcon')" class="btn position-absolute text-muted p-0" style="right: 1.5rem; top: 50%; transform: translateY(-50%); border: none; background: none;">
                                 <i class="bi bi-eye" id="confirmEyeIcon"></i>
                             </button>
                         </div>
-                        <span asp-validation-for="ComfirmPassword" class="text-danger small mt-1 ml-2"></span>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small mt-1 ml-2"></span>
                     </div>
 
                     <div class="mb-4">

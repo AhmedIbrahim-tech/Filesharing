@@ -1,24 +1,52 @@
-﻿using FluentValidation;
-using Microsoft.Extensions.Localization;
+using Filesharing.Helper.Resources;
+using FluentValidation;
 
-namespace Filesharing.Validation
+namespace Filesharing.Validation;
+
+public class LoginValidator : AbstractValidator<LoginViewModel>
 {
-    public class LoginValidator : AbstractValidator<LoginViewModel>
+    public LoginValidator()
     {
-        public LoginValidator(IStringLocalizer<LoginViewModel> localizer)
-        {
-            RuleFor(L => L.Email).EmailAddress().WithMessage("Invalid email format.").NotEmpty().WithMessage("Email is required");
-            RuleFor(L => L.Password).NotEmpty().WithMessage("Password is required");
-        }
-    }
+        RuleFor(x => x.Email)
+            .NotEmpty().WithMessage(x => string.Format(SharedResource.Required, nameof(x.Email)))
+            .EmailAddress().WithMessage(SharedResource.EmailAddress);
 
-    public class RegisterValidator : AbstractValidator<RegistertViewModel>
+        RuleFor(x => x.Password)
+            .NotEmpty().WithMessage(x => string.Format(SharedResource.Required, nameof(x.Password)));
+    }
+}
+
+public class RegisterValidator : AbstractValidator<RegisterViewModel>
+{
+    public RegisterValidator()
     {
-        public RegisterValidator(IStringLocalizer<RegistertViewModel> localizer)
-        {
-            RuleFor(R => R.Email).EmailAddress().WithMessage("Invalid email format.").NotEmpty().WithMessage("Email is required");
-            RuleFor(R => R.Password).NotEmpty().WithMessage("Password is required");
-            // RuleFor(R => R.ComfirmPassword);
-        }
+        RuleFor(x => x.Email)
+            .NotEmpty().WithMessage(x => string.Format(SharedResource.Required, nameof(x.Email)))
+            .EmailAddress().WithMessage(SharedResource.EmailAddress);
+
+        RuleFor(x => x.Password)
+            .NotEmpty().WithMessage(x => string.Format(SharedResource.Required, nameof(x.Password)))
+            .MinimumLength(6);
+
+        RuleFor(x => x.ConfirmPassword)
+            .NotEmpty().WithMessage(x => string.Format(SharedResource.Required, nameof(x.ConfirmPassword)))
+            .Equal(x => x.Password).WithMessage("Passwords do not match");
+    }
+}
+
+public class ChangePasswordValidator : AbstractValidator<ChangePasswordViewModel>
+{
+    public ChangePasswordValidator()
+    {
+        RuleFor(x => x.CurrentPassword)
+            .NotEmpty().WithMessage("Current password is required");
+
+        RuleFor(x => x.NewPassword)
+            .NotEmpty().WithMessage("New password is required")
+            .MinimumLength(6);
+
+        RuleFor(x => x.ConfirmPassword)
+            .NotEmpty().WithMessage("Confirm password is required")
+            .Equal(x => x.NewPassword).WithMessage("Passwords do not match");
     }
 }
