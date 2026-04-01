@@ -1,90 +1,98 @@
-# 🚀 FileSharing: Next-Generation Cloud Storage & Sharing
+![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
+![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)
 
-![FileSharing Banner](Files/design/hero.png)
+# ☁️ FileSharing.net - Premium Cloud Management
 
-## ✨ Overview
-**FileSharing** is a premium, high-performance web platform built with **ASP.NET Core 10** and **C# 12**. Designed with a focus on **modern aesthetics** and **clean architecture**, it provides a seamless experience for users to securely upload, browse, search, and download files. 
-
-The application utilizes industry-standard practices, including **Service-Oriented Architecture**, **FluentValidation**, and a **Repository-inspired service layer**.
-
----
-
-## 🛠️ Tech Stack & Architecture
-
-- **Core Framework**: `.NET 10 (ASP.NET Core MVC)`
-- **Programming Language**: `C# 12`
-- **Database**: `Entity Framework Core (SQL Server)`
-- **Identity & Security**: `ASP.NET Core Identity`, `Google Auth`, `Facebook Auth`
-- **Validation**: `FluentValidation` (Automated Pipeline)
-- **UI & Aesthetics**: `Bootstrap 5`, `Glassmorphism`, `Animate.css`, `Google Fonts`
-- **Dependency Injection**: Refactored into specialized extension methods for clean `Program.cs`.
-- **Infrastructure**: Automated database migrations on startup.
+Welcome to **FileSharing.net**, a professional-grade, high-performance web application built with **ASP.NET Core 10**. This platform demonstrates modern architectural patterns, clean code principles, and a stunning "Glassmorphism" UI design for a seamless user experience.
 
 ---
 
-## 🌟 Key Features
+## 🚀 Key Takeaways & Architecture
 
-- **📂 Secure File Management**: Optimized file storage with unique filename generation and extension whitelisting.
-- **🔍 Advanced Search**: Instant search capabilities to browse through community-shared content.
-- **🔐 Robust Authentication**: Secure registration and login with local accounts or external providers (Google, Facebook).
-- **🛡️ Identity Integration**: Full account management, including password changes and role-based seeding.
-- **⚡ Performance Tracking**: Atomic download count incrementation using EF Core `ExecuteUpdateAsync`.
-- **✉️ Async Communications**: Fully asynchronous SMTP mail services with structured logging.
-- **🎨 Premium UI/UX**: Dark-themed, modern interface with smooth micro-animations and responsive design.
+This project has been fully refactored to follow **Clean Architecture** and industry best practices. It's more than just a file sharing tool—it's a demonstration of professional software engineering.
 
----
+### 🏛️ Modern Architecture
+- **Service-Oriented Design**: Business logic is decoupled from controllers using dedicated services (`AccountService`, `UploadService`, `MailServices`).
+- **Data Persistence**: Uses **Entity Framework Core** with specialized `IEntityTypeConfiguration` and Fluent API for clean database schema management.
+- **Dependency Injection Infrastructure**: Organized service registrations using clean `AddInfrastructure` extension methods in `Program.cs`.
+- **C# 12+ Features**: extensive use of **Primary Constructors**, file-scoped namespaces, and Tuples for efficient, modern code.
 
-## 🚀 Getting Started
+### 🛡️ Security & Validation
+- **FluentValidation**: Complete migration from DataAnnotations to a robust, separate validation layer for all ViewModels.
+- **Identity & Auth**: Integrated **ASP.NET Core Identity** with role-based access control and **Social Authentication** (Google, Facebook).
+- **Security Defaults**: Configured safe defaults, including secure-only cookies, anti-XSS measures, and open-redirect protection.
 
-### Prerequisites
-
-- **.NET 10 SDK**
-- **SQL Server LocalDB** or a dedicated instance.
-- Visual Studio 2022 (Latest) or VS Code.
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/AhmedIbrahim-tech/Filesharing.git
-   ```
-
-2. **Configure Database:**
-   Update the `DefaultConnection` in `appsettings.json` to point to your SQL Server instance.
-   ```json
-   "ConnectionStrings": {
-     "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=FileSharingDB;..."
-   }
-   ```
-
-3. **Run Migrations & Seed Data:**
-   The application automatically runs migrations and seeds the **Super Admin** account on startup.
-   - **Admin User**: `admin@filesharing.com`
-   - **Password**: `Admin@123`
-
-4. **Run the App:**
-   ```bash
-   dotnet watch run
-   ```
+### 🎨 Premium UI/UX Design
+- **Dark Mode Aesthetic**: A custom, stunning dark theme featuring **Glassmorphism**, vibrant gradients, and responsive grids.
+- **Modern Typography**: Integrated high-end fonts like **Outfit** and **Inter** for exceptional readability.
+- **Interactive UI**: Micro-animations using `Animate.css`, smooth transitions, and a custom-designed **Favicon/Brand Identity**.
 
 ---
 
-## 📸 Platform Peek
+## 🛠️ Project Structure
+Below is a glimpse of how the professional refactoring has improved the project hierarchy:
 
-<p align="center">
-  <img src="Files/design/logo.png" width="80" alt="Logo" /><br>
-  <b>Premium Experience</b>
-</p>
-
-- **Modern Hero Section**: High-impact visuals with interactive search.
-- **File Cards**: Rich metadata display with glassmorphism effects.
-- **Responsive Navigation**: Adaptive header with localization support (En/Ar).
+![project structure](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/project%20structure.PNG)
 
 ---
 
-## 👨‍💻 Contributing
-This project is an open showcase for professional .NET development. Feel free to fork, explore, and submit pull requests!
+## 📦 Tech Stack
+
+### Backend
+- **Core**: .NET 10, ASP.NET Core MVC
+- **Database**: SQL Server
+- **Authentication**: ASP.NET Core Identity (Identity, Google, Facebook)
+- **Validation**: FluentValidation.AspNetCore
+- **Mail**: Async SMTP Integration
+
+### Frontend
+- **Styling**: Vanilla CSS3 (Modern Polish), Bootstrap 5 (Responsive Layouts)
+- **Icons**: Bootstrap Icons, Font-Awesome 4
+- **Animations**: Animate.min.css
 
 ---
 
-**Developed with ❤️ by [Ahmed Ibrahim](https://github.com/AhmedIbrahim-tech)**
+## 🚦 Getting Started
+
+### 1. Configure the Database
+Update your `appsettings.json` with your local SQL Server instance:
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=YOUR_SERVER;Database=FileSharingDB;..."
+}
+```
+
+### 2. Apply Migrations
+The application is configured to auto-run migrations on startup, but you can also manually run:
+```bash
+dotnet ef database update
+```
+
+### 3. Default Super Admin
+A default Super Admin account is seeded on first run:
+- **Email**: `admin@filesharing.com`
+- **Password**: `Admin@123`
+
+---
+
+## 🖼️ Peek from the Design
+
+![Home Page](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/Home.jpg)
+
+![Browse Page](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/Browse.jpg)
+
+![About Page](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/About.png)
+
+![Search Results](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/Search-Results.png)
+
+![My Uploads](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/MyUpload.png)
+
+![Contact Page](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/Contact.jpg)
+
+![Login Page](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/Login.jpg)
+
+![Register Page](https://github.com/AhmedIbrahim-tech/Filesharing/blob/master/Files/screenshort/Register.jpg)
+
+---
+*Followed by heart from Ahmed Ibrahim*
