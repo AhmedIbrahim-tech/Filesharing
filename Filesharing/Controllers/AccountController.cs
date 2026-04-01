@@ -64,7 +64,7 @@ namespace Filesharing.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegistertViewModel model , string returnurl = null)
+        public async Task<IActionResult> Register(RegistertViewModel model, string returnurl = null)
         {
             ViewData["ReturnUrl"] = returnurl;
             returnurl = returnurl ?? Url.Content("~");
@@ -154,6 +154,42 @@ namespace Filesharing.Controllers
             return RedirectToAction("Index", "Home");
         }
         #endregion
+
+        #region Chnage Password
+
+
+        [HttpPost]
+        public async Task<IActionResult> ChnagePassword(changePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var cuurentUser = await userManager.GetUserAsync(User);
+                if (cuurentUser == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    var result = await userManager.ChangePasswordAsync(cuurentUser, model.CurrentPassword, model.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        RedirectToAction("Info", "Home");
+                    }
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        #endregion
+
 
     }
 }
