@@ -1,345 +1,106 @@
-﻿
-@{
-    ViewData["Title"] = "About";
-}
-		<!-- Start Page Header area -->
-	<div id="mu-page-header">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="mu-page-header-area">
-						<h1 class="mu-page-header-title">About us</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Page Header area -->
+<!-- Page Header -->
+<div id="mu-page-header" class="hero-wrapper mb-5">
+    <div class="container text-center pt-5">
+        <h1 class="hero-title animate__animated animate__fadeInDown">@Localizer["About Us"]</h1>
+        <p class="text-muted animate__animated animate__fadeInUp">@Localizer["Empowering the community through seamless file sharing."]</p>
+    </div>
+</div>
 
-	<!-- Start Breadcrumb -->
-	<div id="mu-breadcrumb">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<nav aria-label="breadcrumb" role="navigation">
-					  <ol class="breadcrumb mu-breadcrumb">
-					    <li class="breadcrumb-item"><a href="#">Home</a></li>
-					    <li class="breadcrumb-item active" aria-current="page">About Us</li>
-					  </ol>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Breadcrumb -->
-	
-	<!-- Start main content -->
-	<main>
-		<!-- Start About -->
-		<section id="mu-about">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="mu-about-area">
-							<!-- Title -->
-							<div class="row">
-								<div class="col-md-12">
-									<div class="mu-title">
-										<h2>Who we are</h2>
-										<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa cum sociis.</p>
-									</div>
-								</div>
-							</div>
-							<!-- Start Feature Content -->
-							<div class="row">
-								<div class="col-md-6">
-									<div class="mu-about-left">
-										<img class="lazyload" src="~/assets/images/about-us.jpg" alt="img">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="mu-about-right">
-										<ul>
-											<li>
-												<h3>Our Mission</h3>
-												<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,</p>
-											</li>
-											<li>
-												<h3>Our Vision</h3>
-												<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,</p>
-											</li>
-											<li>
-												<h3>Our Valuse</h3>
-												<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,</p>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- End Feature Content -->
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- End About -->
+<main class="container pb-5">
+    <!-- Who we are -->
+    <section class="py-5 mt-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <div class="mu-title text-start mb-4">
+                    <h2 class="display-4 font-weight-bold mb-4">@Localizer["Who"] <span class="text-gradient">@Localizer["We Are"]</span></h2>
+                    <p class="text-muted lead mb-4">
+                        @Localizer["We are a community-driven platform dedicated to making file sharing fast, secure, and accessible to everyone. Our platform is built on transparency and the collective power of knowledge sharing."]
+                    </p>
+                </div>
+                <div class="row g-4 mt-2">
+                    <div class="col-sm-6">
+                        <div class="download-card p-4 animate__animated animate__zoomIn">
+                            <div class="card-icon mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <h4 class="h5">@Localizer["Secure"]</h4>
+                            <p class="text-muted small mb-0">@Localizer["Your files are handled with the highest security standards."]</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="download-card p-4 animate__animated animate__zoomIn" style="animation-delay: 0.2s;">
+                            <div class="card-icon mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;">
+                                <i class="bi bi-lightning-charge"></i>
+                            </div>
+                            <h4 class="h5">@Localizer["Fast"]</h4>
+                            <p class="text-muted small mb-0">@Localizer["High-speed uploads and downloads without limits."]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="rounded-4 overflow-hidden shadow-2xl animate__animated animate__fadeInRight" style="border: 1px solid var(--border); box-shadow: 0 25px 50px -12px rgba(56, 189, 248, 0.25);">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1000" class="img-fluid" alt="Our Team">
+                </div>
+            </div>
+        </div>
+    </section>
 
-		<!-- Start Skills -->
-		<section id="mu-skills">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="mu-skills-area">
-							<!-- Title -->
-							<div class="row">
-								<div class="col-md-12">
-									<div class="mu-title">
-										<h2>Our Working Skill</h2>
-										<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa cum sociis.</p>
-									</div>
-								</div>
-							</div>
-							<!-- Start Skills Content -->
-							<div class="row">
-								<div class="col-md-12">
-									<div class="mu-skills-content">
-										<div class="row">
-											<!-- start single item -->
-											<div class="col-md-3">
-												<div class="mu-single-skills">
-													<div class="mu-skills-circle">
-														<div id="circle-1" class="mu-circle" data-circle-dialWidth=15>
-														    <div class="loader-bg">
-														        <div class="text">00:00:00</div>
-														    </div>
-														</div>
-													</div>
-													<h3>Web Design</h3>
-													<p>Lorem ipsum dolor sit amet, con sectetuer adipiscing elitamin.</p>
-												</div>
-											</div>
-											<!-- End single item -->
-											<!-- start single item -->
-											<div class="col-md-3">
-												<div class="mu-single-skills">
-													<div class="mu-skills-circle">
-														<div id="circle-2" class="mu-circle" data-circle-dialWidth=15>
-														    <div class="loader-bg">
-														        <div class="text">00:00:00</div>
-														    </div>
-														</div>
-													</div>
-													<h3>Mobile Development</h3>
-													<p>Lorem ipsum dolor sit amet, con sectetuer adipiscing elitamin.</p>
-												</div>
-											</div>
-											<!-- End single item -->
-											<!-- start single item -->
-											<div class="col-md-3">
-												<div class="mu-single-skills">
-													<div class="mu-skills-circle">
-														<div id="circle-3" class="mu-circle" data-circle-dialWidth=15>
-														    <div class="loader-bg">
-														        <div class="text">00:00:00</div>
-														    </div>
-														</div>
-													</div>
-													<h3>E-commerce</h3>
-													<p>Lorem ipsum dolor sit amet, con sectetuer adipiscing elitamin.</p>
-												</div>
-											</div>
-											<!-- End single item -->
-											<!-- start single item -->
-											<div class="col-md-3">
-												<div class="mu-single-skills">
-													<div class="mu-skills-circle">
-														<div id="circle-4" class="mu-circle" data-circle-dialWidth=15>
-														    <div class="loader-bg">
-														        <div class="text">00:00:00</div>
-														    </div>
-														</div>
-													</div>
-													<h3>Online Marketing</h3>
-													<p>Lorem ipsum dolor sit amet, con sectetuer adipiscing elitamin.</p>
-												</div>
-											</div>
-											<!-- End single item -->
-										</div>
-									</div>
-								</div>
-								
-							</div>
-							<!-- End Skills Content -->
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- End Skills -->
+    <!-- Mission & Vision -->
+    <section class="py-5 mt-5">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="download-card h-100 p-4 text-center glass-hover transition-all">
+                    <div class="card-icon mx-auto mb-4" style="width: 70px; height: 70px; font-size: 2.5rem;">
+                        <i class="bi bi-bullseye"></i>
+                    </div>
+                    <h3 class="h4 mb-3">@Localizer["Our Mission"]</h3>
+                    <p class="text-muted">@Localizer["To bridge the gap between people through open and secure exchange of information and digital assets."]</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="download-card h-100 p-4 text-center glass-hover transition-all">
+                    <div class="card-icon mx-auto mb-4" style="width: 70px; height: 70px; font-size: 2.5rem;">
+                        <i class="bi bi-eye"></i>
+                    </div>
+                    <h3 class="h4 mb-3">@Localizer["Our Vision"]</h3>
+                    <p class="text-muted">@Localizer["To build a global library where every student and professional can find the resources they need instantly."]</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="download-card h-100 p-4 text-center glass-hover transition-all">
+                    <div class="card-icon mx-auto mb-4" style="width: 70px; height: 70px; font-size: 2.5rem;">
+                        <i class="bi bi-heart"></i>
+                    </div>
+                    <h3 class="h4 mb-3">@Localizer["Our Values"]</h3>
+                    <p class="text-muted">@Localizer["Integrity, community growth, and unrestricted access to public knowledge are the pillars of our platform."]</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-		<!-- Start Team -->
-		<section id="mu-team">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="mu-team-area">
-							<!-- Title -->
-							<div class="row">
-								<div class="col-md-12">
-									<div class="mu-title">
-										<h2>Creative team</h2>
-										<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa cum sociis.</p>
-									</div>
-								</div>
-							</div>
-							<!-- Start Team Content -->
-							<div class="row">
-								<div class="col-md-12">
-									<div class="mu-team-content">
-										<div class="row">
-											<!-- start single item -->
-											<div class="col-md-6">
-												<div class="mu-single-team">
-													<div class="mu-single-team-img">
-														<img src="~/assets/images/team-member.jpg" alt="img">
-													</div>
-													<div class="mu-single-team-content">
-														<h3>Hannah Torres</h3>
-														<span>Founder</span>
-														<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
-														<ul class="mu-team-social">
-															<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-															<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-															<li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
-															<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-														</ul>
-													</div>
-												</div>
-											</div>
-											<!-- End single item -->
-											<!-- start single item -->
-											<div class="col-md-6">
-												<div class="mu-single-team">
-													<div class="mu-single-team-img">
-														<img src="~/assets/images/team-member.jpg" alt="img">
-													</div>
-													<div class="mu-single-team-content">
-														<h3>Hannah Torres</h3>
-														<span>Founder</span>
-														<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
-														<ul class="mu-team-social">
-															<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-															<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-															<li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
-															<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-														</ul>
-													</div>
-												</div>
-											</div>
-											<!-- End single item -->
-											<!-- start single item -->
-											<div class="col-md-6">
-												<div class="mu-single-team">
-													<div class="mu-single-team-img">
-														<img src="~/assets/images/team-member.jpg" alt="img">
-													</div>
-													<div class="mu-single-team-content">
-														<h3>Hannah Torres</h3>
-														<span>Founder</span>
-														<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
-														<ul class="mu-team-social">
-															<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-															<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-															<li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
-															<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-														</ul>
-													</div>
-												</div>
-											</div>
-											<!-- End single item -->
-											<!-- start single item -->
-											<div class="col-md-6">
-												<div class="mu-single-team">
-													<div class="mu-single-team-img">
-														<img src="~/assets/images/team-member.jpg" alt="img">
-													</div>
-													<div class="mu-single-team-content">
-														<h3>Hannah Torres</h3>
-														<span>Founder</span>
-														<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
-														<ul class="mu-team-social">
-															<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-															<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-															<li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
-															<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-														</ul>
-													</div>
-												</div>
-											</div>
-											<!-- End single item -->
-										</div>
-									</div>
-								</div>
-								
-							</div>
-							<!-- End Team Content -->
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<!-- End Team -->
-
-		<!-- Start Clients -->
-		<div id="mu-clients">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="mu-clients-area">
-
-							<!-- Start Clients brand logo -->
-							<div class="mu-clients-slider">
-
-								<div class="mu-clients-single">
-									<img src="~/assets/images/client-brand-1.jpg" alt="Brand Logo">
-								</div>
-
-								<div class="mu-clients-single">
-									<img src="~/assets/images/client-brand-2.jpg" alt="Brand Logo">
-								</div>
-
-								<div class="mu-clients-single">
-									<img src="~/assets/images/client-brand-3.jpg" alt="Brand Logo">
-								</div>
-
-								<div class="mu-clients-single">
-									<img src="~/assets/images/client-brand-4.jpg" alt="Brand Logo">
-								</div>
-
-								<div class="mu-clients-single">
-									<img src="~/assets/images/client-brand-5.jpg" alt="Brand Logo">
-								</div>
-
-								<div class="mu-clients-single">
-									<img src="~/assets/images/client-brand-6.jpg" alt="Brand Logo">
-								</div>
-
-								<div class="mu-clients-single">
-									<img src="~/assets/images/client-brand-6.jpg" alt="Brand Logo">
-								</div>
-							</div>
-							<!-- End Clients brand logo -->
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Clients -->
-
-	</main>
-	
-	<!-- End main content -->	
+    <!-- Stats -->
+    <section class="my-5 py-5 rounded-4 glass p-5 text-center animate__animated animate__fadeInUp" style="border: 1px solid var(--border);">
+        <div class="row g-4">
+            <div class="col-sm-6 col-lg-3">
+                <h2 class="text-gradient display-4 font-weight-bold mb-0">10M+</h2>
+                <p class="text-muted mb-0 font-weight-600">@Localizer["Files Shared"]</p>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <h2 class="text-gradient display-4 font-weight-bold mb-0">500K+</h2>
+                <p class="text-muted mb-0 font-weight-600">@Localizer["Active Users"]</p>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <h2 class="text-gradient display-4 font-weight-bold mb-0">2.5PB</h2>
+                <p class="text-muted mb-0 font-weight-600">@Localizer["Data Transferred"]</p>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <h2 class="text-gradient display-4 font-weight-bold mb-0">24/7</h2>
+                <p class="text-muted mb-0 font-weight-600">@Localizer["Support"]</p>
+            </div>
+        </div>
+    </section>
+</main>
 			
 		
 

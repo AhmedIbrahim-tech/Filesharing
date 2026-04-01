@@ -1,52 +1,83 @@
-﻿@inject IViewLocalizer Localizer;
+@inject IViewLocalizer Localizer;
 
-<!-- Start Header -->
-<header id="mu-hero">
-    <div class="">
-            <nav class="navbar navbar-expand-lg navbar-light mu-navbar">
-            <!-- Text based logo -->
-            <a class="navbar-brand mu-logo " asp-area="" asp-controller="Home" asp-action="Index"><span> @Localizer["FileSharing"] </span></a>
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString()?.ToLower();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString()?.ToLower();
+}
 
-            <!-- image based logo -->
-            <!-- <a class="navbar-brand mu-logo" href="index.html"><img src="~/assets/images/logo.png" alt="logo"></a> -->
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="fa fa-bars"></span>
-              </button>
+<header id="mu-hero" class="bg-glass sticky-top" style="backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark p-0" style="height: 80px;">
+            <!-- Logo -->
+            <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                 <div class="logo-icon bg-primary-soft me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; border-radius: 12px; background: rgba(56, 189, 248, 0.15);">
+                    <i class="bi bi-cloud-arrow-up text-primary" style="font-size: 1.3rem;"></i>
+                </div>
+                <span class="mu-logo"><span>FileSharing</span></span>
+            </a>
 
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto mu-navbar-nav navbar-ul">
+            <button class="navbar-toggler border-0 shadow-none ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list h2 mb-0 text-white"></i>
+            </button>
 
-                    <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/home/index" || Context.Request.Path.Value.ToLower() == "/" ? "active" : "")">
-                        <a asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-lg-5 me-auto mb-2 mb-lg-0 gap-lg-4 gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link @(currentController == "home" && currentAction == "index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="bi bi-house-door me-2"></i>@Localizer["Home"]
+                        </a>
                     </li>
-                    <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/upload/browse" ? "active" : "")">
-                        <a asp-area="" asp-controller="Upload" asp-action="Browse">@Localizer["Browse"]</a>
+                    <li class="nav-item">
+                        <a class="nav-link @(currentController == "upload" && currentAction == "browse" ? "active" : "")" asp-area="" asp-controller="Upload" asp-action="Browse">
+                            <i class="bi bi-compass me-2"></i>@Localizer["Browse"]
+                        </a>
                     </li>
-                    <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/home/about" ? "active" : "")">
-                        <a asp-area="" asp-controller="Home" asp-action="About">@Localizer["About"]</a>
+                    <li class="nav-item">
+                        <a class="nav-link @(currentController == "home" && currentAction == "about" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="About">
+                            <i class="bi bi-info-circle me-2"></i>@Localizer["About"]
+                        </a>
                     </li>
-                    <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/home/contact" ? "active" : "")">
-                        <a asp-area="" asp-controller="Home" asp-action="Contact">@Localizer["Contact"]</a>
+                    <li class="nav-item">
+                        <a class="nav-link @(currentController == "home" && currentAction == "contact" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Contact">
+                            <i class="bi bi-envelope me-2"></i>@Localizer["Contact"]
+                        </a>
                     </li>
 
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.Identity?.IsAuthenticated == true)
                     {
-                            <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/upload/index" || Context.Request.Path.Value.ToLower() == "/upload" ? "active" : "")">
-                                <a asp-area="" asp-controller="Upload" asp-action="Index">@Localizer["Uploads"]</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(currentController == "upload" && currentAction == "index" ? "active" : "")" asp-area="" asp-controller="Upload" asp-action="Index">
+                                <i class="bi bi-cloud-arrow-up me-2"></i>@Localizer["Uploads"]
+                            </a>
+                        </li>
                     }
 
-                    <li class="nav-item dropdown">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Language"]</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="/Home/SetLang?Lang=ar-SA&returnUrl=@Context.Request.Path.Value">العربية</a>
-                            <a class="dropdown-item" href="/Home/SetLang?Lang=en-US&returnUrl=@Context.Request.Path.Value">English</a>
+                    <li class="nav-item d-flex align-items-center ms-lg-4">
+                        @{
+                            var culture = Context.Features.Get<Microsoft.AspNetCore.Localization.IRequestCultureFeature>()?.RequestCulture.Culture.Name;
+                            if (culture == "ar-SA")
+                            {
+                                <a class="nav-link animate__animated animate__fadeIn p-0" href="/Home/SetLang?Lang=en-US&returnUrl=@Context.Request.Path" title="Switch to English">
+                                    <span class="badge bg-glass text-white rounded-pill px-3 py-2 border border-white-10 d-flex align-items-center hover-glow" style="background: rgba(255,255,255,0.05);">
+                                       <span class="fi fi-gb me-2 rounded-1"></span> English
+                                    </span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link animate__animated animate__fadeIn p-0" href="/Home/SetLang?Lang=ar-SA&returnUrl=@Context.Request.Path" title="Switch to العربية">
+                                    <span class="badge bg-glass text-white rounded-pill px-3 py-2 border border-white-10 d-flex align-items-center hover-glow" style="background: rgba(255,255,255,0.05);">
+                                        <span class="fi fi-eg me-2 rounded-1"></span> العربية
+                                    </span>
+                                </a>
+                            }
+                        }
                     </li>
                 </ul>
                                 
-                <ul class="navbar-nav mu-navbar-nav navbar-auth">
-                    @Html.Partial("_LoginPartial")
-                </ul>
+                <div class="navbar-nav align-items-center">
+                    <partial name="_LoginPartial" />
+                </div>
             </div>
         </nav>
     </div>

@@ -1,108 +1,129 @@
-﻿@model ContactViewModal
+@model ContactViewModal
 @{
     ViewData["Title"] = "Contact";
 }
 
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success">
-            <strong> @TempData["Message"] </strong>
+<!-- Page Header -->
+<div id="mu-page-header" class="hero-wrapper">
+    <div class="container text-center">
+        <h1 class="hero-title animate__animated animate__fadeInDown">@Localizer["Get In Touch"]</h1>
+        <p class="text-muted animate__animated animate__fadeInUp">@Localizer["Have questions? We'd love to hear from you. Send us a message and we'll get back to you as soon as possible."]</p>
     </div>
-}
+</div>
 
+<div class="container mt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 animate__animated animate__fadeInUp">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-success glass text-white border-0 rounded-4 mb-4">
+                    <i class="bi bi-check-circle mr-2 text-primary"></i> <strong>@TempData["Message"]</strong>
+                </div>
+            }
+        </div>
+    </div>
+</div>
 
-	<!-- Start Page Header area -->
-	<div id="mu-page-header">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="mu-page-header-area">
-						<h1 class="mu-page-header-title">Contact us</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Page Header area -->
-
-	<!-- Start Breadcrumb -->
-	<div id="mu-breadcrumb">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<nav aria-label="breadcrumb" role="navigation">
-					  <ol class="breadcrumb mu-breadcrumb">
-					    <li class="breadcrumb-item"><a href="#">Home</a></li>
-					    <li class="breadcrumb-item active" aria-current="page">Contact Us</li>
-					  </ol>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Breadcrumb -->
-
-<!-- Start Contact -->
-<section id="mu-contact">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="mu-contact-area">
-                    <!-- Title -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="mu-title">
-                                <h2>Say Hello!</h2>
-                                @* <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa cum sociis.</p> *@
+<section id="mu-contact" class="py-5">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="download-card p-0 overflow-hidden shadow-2xl animate__animated animate__zoomIn">
+                    <div class="row g-0">
+                        <!-- Contact Info -->
+                        <div class="col-lg-4 p-5 glass" style="background: var(--gradient); color: white;">
+                            <h3 class="font-weight-bold mb-4">@Localizer["Contact Information"]</h3>
+                            <p class="mb-5">@Localizer["Fill out the form and our team will get back to you within 24 hours."]</p>
+                            
+                            <div class="d-flex align-items-center mb-4">
+                                <i class="bi bi-geo-alt-fill me-3 h4 mb-0 opacity-75"></i>
+                                <span>123 Sharing Street, Cloud City, 45678</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-4">
+                                <i class="bi bi-envelope-fill me-3 h4 mb-0 opacity-75"></i>
+                                <span>support@filesharing.com</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-telephone-fill me-3 h4 mb-0 opacity-75"></i>
+                                <span>+1 (234) 567-890</span>
                             </div>
                         </div>
-                    </div>
-                        <!-- Start Contact Content -->
-                    <div class="mu-contact-content">
-                        <div class="row">
 
-                            <div class="col-md-12">
-                                <div class="mu-contact-form-area">
-                                    <div id="form-messages"></div>
-                                    <form id="contact" method="post" class="mu-contact-form" asp-action="Contact" >
-
-                                        <div class="form-group">  
-                                            <span class="fa fa-user mu-contact-icon"></span>              
-                                            <input type="text" asp-for="Name" class="form-control" placeholder="Name" id="name" name="name" required>
-                                            <span asp-validation-for="Name" ></span>
+                        <!-- Contact Form -->
+                        <div class="col-lg-8 p-5">
+                            <form id="contact-form" class="mu-contact-form" asp-action="Contact" method="post">
+                                <div class="row g-4 text-start">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-muted small mb-2 ms-2 font-weight-600">@Localizer["Name"]</label>
+                                        <div class="position-relative">
+                                            <i class="bi bi-person position-absolute text-primary" style="left: 1.5rem; top: 50%; transform: translateY(-50%);"></i>
+                                            <input type="text" asp-for="Name" class="form-control rounded-pill bg-dark border-0 ps-5 text-white" style="background: rgba(2, 6, 23, 0.5) !important; padding: 1.25rem 1.25rem 1.25rem 3.5rem;" placeholder="Your Name" required>
                                         </div>
-
-                                        <div class="form-group">  
-                                            <span class="fa fa-envelope mu-contact-icon"></span>              
-                                            <input type="email" asp-for="Email" class="form-control" placeholder="Enter Email" id="email" name="email" required>
-                                            <span asp-validation-for="Email" ></span>
-                                        </div>    
-
-                                        <div class="form-group"> 
-                                            <span class="fa fa-folder-open-o mu-contact-icon"></span>                
-                                            <input type="text" asp-for="Subject" class="form-control" placeholder="Your Subject" id="subject" name="subject" required>
-                                            <span asp-validation-for="Subject" ></span>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="text-muted small mb-2 ms-2 font-weight-600">@Localizer["Email Address"]</label>
+                                        <div class="position-relative">
+                                            <i class="bi bi-envelope position-absolute text-primary" style="left: 1.5rem; top: 50%; transform: translateY(-50%);"></i>
+                                            <input type="email" asp-for="Email" class="form-control rounded-pill bg-dark border-0 ps-5 text-white" style="background: rgba(2, 6, 23, 0.5) !important; padding: 1.25rem 1.25rem 1.25rem 3.5rem;" placeholder="name@example.com" required>
                                         </div>
-
-                                        <div class="form-group">
-                                            <span class="fa fa-pencil-square-o mu-contact-icon"></span> 
-                                            <textarea asp-for="Message" class="form-control" placeholder="Message" id="message" name="message" required></textarea>
-                                            <span asp-validation-for="Message" ></span>
+                                    </div>
+                                    <div class="col-12 mb-3">
+                                        <label class="text-muted small mb-2 ms-2 font-weight-600">@Localizer["Subject"]</label>
+                                        <div class="position-relative">
+                                            <i class="bi bi-chat-dots position-absolute text-primary" style="left: 1.5rem; top: 50%; transform: translateY(-50%);"></i>
+                                            <input type="text" asp-for="Subject" class="form-control rounded-pill bg-dark border-0 ps-5 text-white" style="background: rgba(2, 6, 23, 0.5) !important; padding: 1.25rem 1.25rem 1.25rem 3.5rem;" placeholder="What is this regarding?" required>
                                         </div>
-                                        <button type="submit" class="mu-send-msg-btn"><span>Send Message</span></button>
-                                    </form>
+                                    </div>
+                                    <div class="col-12 mb-4">
+                                        <label class="text-muted small mb-2 ms-2 font-weight-600">@Localizer["Message"]</label>
+                                        <div class="position-relative">
+                                            <i class="bi bi-pencil position-absolute text-primary" style="left: 1.5rem; top: 2rem;"></i>
+                                            <textarea asp-for="Message" class="form-control rounded-4 bg-dark border-0 ps-5 text-white" style="background: rgba(2, 6, 23, 0.5) !important; padding: 1.25rem 1.25rem 1.25rem 3.5rem;" rows="4" placeholder="Describe your inquiry..." required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <button type="submit" class="btn btn-primary-modern btn-modern w-100 justify-content-center rounded-pill py-3">
+                                            <span>@Localizer["Send Message"]</span> <i class="bi bi-send-fill ml-2 small"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-
+                            </form>
                         </div>
                     </div>
-                    <!-- End Contact Content -->
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- End Contact -->
+
+<!-- Additional Contact Cards -->
+<div class="container pb-5">
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <div class="download-card p-4 h-100 glass-hover transition-all">
+                <i class="bi bi-chat-text h2 text-primary d-block mb-3"></i>
+                <h4 class="font-weight-bold">@Localizer["Live Chat"]</h4>
+                <p class="text-muted small mb-0">@Localizer["Chat with our friendly team in real-time."]</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="download-card p-4 h-100 glass-hover transition-all">
+                <i class="bi bi-headset h2 text-primary d-block mb-3"></i>
+                <h4 class="font-weight-bold">@Localizer["Phone Support"]</h4>
+                <p class="text-muted small mb-0">@Localizer["Call us directly for urgent matters."]</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="download-card p-4 h-100 glass-hover transition-all">
+                <i class="bi bi-question-circle h2 text-primary d-block mb-3"></i>
+                <h4 class="font-weight-bold">@Localizer["Knowledge Base"]</h4>
+                <p class="text-muted small mb-0">@Localizer["Find answers in our extensive help center."]</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
 
 
 

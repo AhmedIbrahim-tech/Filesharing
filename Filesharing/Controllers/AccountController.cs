@@ -1,4 +1,8 @@
-﻿using Filesharing.ViewModels;
+using Filesharing.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Filesharing.Controllers
 {
@@ -39,7 +43,7 @@ namespace Filesharing.Controllers
                 var Result = await signInManager.PasswordSignInAsync(model.Email, model.Password, true, false); //True = Remember me , False = Lock the Account after 5 Times.
                 if (Result.Succeeded)
                 {
-                    return RedirectToAction("Create", "Upload");
+                    return RedirectToAction("Index", "Upload");
                 }
                 else
                 {
@@ -81,8 +85,8 @@ namespace Filesharing.Controllers
                 // We should Write This Code Because Don't Need Login Again
                 if (Result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, false); //false = Remember me 
-                    return RedirectToAction("Create", "Upload");
+                    await signInManager.SignInAsync(user, true); //true = Remember me 
+                    return RedirectToAction("Index", "Upload");
                 }
 
                 foreach (var error in Result.Errors)
@@ -124,7 +128,7 @@ namespace Filesharing.Controllers
                 return RedirectToAction("Login");
             }
 
-            var loginResult = await signInManager.ExternalLoginSignInAsync(logininfo.LoginProvider, logininfo.ProviderKey, false);
+            var loginResult = await signInManager.ExternalLoginSignInAsync(logininfo.LoginProvider, logininfo.ProviderKey, true);
             if (!loginResult.Succeeded)
             {
                 // Create Local Account
@@ -144,7 +148,7 @@ namespace Filesharing.Controllers
                     var ExLoginResult = await userManager.AddLoginAsync(UserToCreate, logininfo);
                     if (ExLoginResult.Succeeded)
                     {
-                        await signInManager.SignInAsync(UserToCreate, false, logininfo.LoginProvider);
+                        await signInManager.SignInAsync(UserToCreate, true, logininfo.LoginProvider);
                         return RedirectToAction("Index", "Home");
                     }
                 }
@@ -155,11 +159,11 @@ namespace Filesharing.Controllers
         }
         #endregion
 
-        #region Chnage Password
+        #region Change Password
 
 
         [HttpPost]
-        public async Task<IActionResult> ChnagePassword(changePasswordViewModel model)
+        public async Task<IActionResult> ChangePassword(changePasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -173,7 +177,7 @@ namespace Filesharing.Controllers
                     var result = await userManager.ChangePasswordAsync(cuurentUser, model.CurrentPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
-                        RedirectToAction("Info", "Home");
+                        return RedirectToAction("Index", "Upload");
                     }
                     foreach (var item in result.Errors)
                     {

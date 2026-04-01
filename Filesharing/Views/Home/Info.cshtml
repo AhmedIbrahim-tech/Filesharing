@@ -1,49 +1,34 @@
-﻿
 @{
     ViewData["Title"] = "Personal Information";
 }
 
-@* <h2>@ViewData["Title"]</h2> *@
+<!-- Page Header -->
+<div id="mu-page-header" class="hero-wrapper pb-5 pt-5">
+    <div class="container text-center">
+        <h1 class="hero-title pt-5">@Localizer["Personal Information"]</h1>
+        <p class="text-muted">Manage your account settings and security.</p>
+    </div>
+</div>
 
+<div class="container mt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 animate__animated animate__fadeInUp">
+            <div class="download-card p-5 mb-5 text-center">
+                <div class="card-icon mx-auto mb-4" style="width: 80px; height: 80px; font-size: 3rem;">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <h3 class="mb-2">@User.Identity.Name</h3>
+                <p class="text-muted small">@Localizer["Active account session"]</p>
+            </div>
 
-	<!-- Start Page Header area -->
-	<div id="mu-page-header" >
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="mu-page-header-area">
-						<h1 class="mu-page-header-title">Information</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Page Header area -->
-
-	<!-- Start Breadcrumb -->
-	<div id="mu-breadcrumb" style="margin-bottom:1%">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<nav aria-label="breadcrumb" role="navigation">
-					  <ol class="breadcrumb mu-breadcrumb">
-					    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Information</a></li>
-					    <li class="breadcrumb-item active" aria-current="page">Information</li>
-					  </ol>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Breadcrumb -->
-
-<div class="container">
-
-<p>
-    <strong> Logged in user </strong> : <span> @User.Identity.Name </span>
-</p>
-<br />
-
-@{await Html.RenderPartialAsync("_changePassword.cshtml" , new changePasswordViewModel());}
-
+            <div class="download-card p-5">
+                <div class="mu-title text-start mb-4">
+                    <h3 class="font-weight-bold mb-3"><i class="bi bi-shield-lock mr-2 text-primary"></i> <span class="text-gradient">Security</span> Settings</h3>
+                    <p class="text-muted small">Update your password to keep your account secure.</p>
+                </div>
+                
+                @{await Html.RenderPartialAsync("_changePassword.cshtml", new changePasswordViewModel());}
+            </div>
+        </div>
+    </div>
 </div>

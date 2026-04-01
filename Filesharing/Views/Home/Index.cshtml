@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
     var ContentTypeArr = new[] { "image/png", "image/jpeg" };
 
@@ -6,73 +6,102 @@
 
 
 
-	<!-- Start Breadcrumb -->
-	<div id="mu-breadcrumb" style="margin-bottom:1%">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<nav aria-label="breadcrumb" role="navigation">
-					  <ol class="breadcrumb mu-breadcrumb">
-					    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-					    <li class="breadcrumb-item active" aria-current="page">Home</li>
-					  </ol>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Breadcrumb -->
-
-<div class="text-center">
-    <h1 class="display-4">Welcome, Search Files</h1>
-    <br />
-    <div class="row justify-content-md-center">
-        <div class="col-md-8">
-
+<!-- Hero Section -->
+<section class="hero-wrapper mb-5">
+    <div class="container text-center">
+        <h1 class="hero-title animate__animated animate__fadeInDown">
+            @Localizer["Welcome,"] <span class="text-gradient">@Localizer["Search Files"]</span>
+        </h1>
+        <p class="text-muted mb-5 animate__animated animate__fadeInUp animate__delay-1s" style="font-size: 1.25rem; max-width: 700px; margin: 0 auto;">
+            Experience the next generation of file sharing. Secure, fast, and completely free for the community.
+        </p>
+        
+        <div class="search-container animate__animated animate__fadeInUp animate__delay-1s">
             <form asp-action="Search" asp-controller="Upload">
-
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Search ... " aria-label="Recipient's username" aria-describedby="button-addon2" name="Term">
-                    <button class="btn btn-outline-success" type="submit" id="button-addon2"><i class="bi bi-search"></i></button>
-                </div>
-
+                <i class="bi bi-search search-icon"></i>
+                <input type="text" class="form-control" placeholder="@Localizer["Search for amazing files..."]" name="Term">
             </form>
-
         </div>
-        <div class="col-md-12 text-start" style="margin-top : 40px">
-            <h2> Popular Download </h2>
 
-            <hr />
-
-
-            <table id="Companies" class="table table-striped table-bordered dt-responsive nowrap">
-                <tbody>
-                    @foreach (UploadViewModel item in ViewBag.popular)
-                    {
-                        <tr>
-                            <td>
-                                @if (ContentTypeArr.Contains(item.ContentType))
-                                {
-                                    <img width="70" height="70" src="~/Uploads/@item.FileName" class="img-thumbnail" alt="@item.OriginalFileName" />
-                                }
-                                else
-                                {
-                                    <img src="~/img/File.png" width="70" height="70" class="img-thumbnail" alt="@item.OriginalFileName" />
-                                }
-                            </td>
-                            <td>
-                                <strong> Name : </strong> @item.OriginalFileName
-                            </td>
-                            <td>
-                                <strong> Download Count : </strong> @item.DownloadCount
-                            </td>
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
-
+        <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+            <a asp-action="Browse" asp-controller="Upload" class="btn btn-primary-modern btn-modern rounded-pill">
+                @Localizer["Start Browsing"] <i class="bi bi-rocket-takeoff ml-2"></i>
+            </a>
+            <a asp-action="About" asp-controller="Home" class="btn btn-outline-modern btn-modern rounded-pill">
+                @Localizer["Learn More"] <i class="bi bi-info-circle ml-2"></i>
+            </a>
         </div>
     </div>
-</div>
+</section>
+
+<div class="container py-5 mt-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-6">
+        <div>
+            <h2 class="font-weight-bold mb-1" style="font-size: 2rem;">
+                <i class="bi bi-stars text-primary mr-2"></i> @Localizer["Popular Downloads"]
+            </h2>
+            <p class="text-muted mb-0">Trending files most downloaded by the community right now.</p>
+        </div>
+        </div>
+        <div class="col-6 text-right">
+        <a asp-action="Browse" asp-controller="Upload" class="btn btn-outline-modern btn-modern rounded-pill btn-sm">
+            @Localizer["View All"] <i class="bi bi-chevron-right ml-1"></i>
+        </a>
+    </div>
+
+    <div class="download-grid">
+        @foreach (UploadViewModel item in ViewBag.popular)
+        {
+            <div class="download-card animate__animated animate__fadeInUp">
+                @if (ContentTypeArr.Contains(item.ContentType))
+                {
+                    <img src="~/Uploads/@item.FileName" class="card-thumbnail" alt="@item.OriginalFileName" />
+                }
+                else
+                {
+                    var fileExt = System.IO.Path.GetExtension(item.OriginalFileName).ToLower();
+                    var iconClass = fileExt switch {
+                        ".pdf" => "bi-file-pdf pdf",
+                        ".zip" or ".rar" => "bi-file-zip zip",
+                        ".doc" or ".docx" => "bi-file-word doc",
+                        ".xls" or ".xlsx" => "bi-file-excel xls",
+                        ".txt" => "bi-file-text txt",
+                        _ => "bi-file-earmark"
+                    };
+                    
+                    <div class="card-icon @iconClass.Split(' ').Last()">
+                        <i class="bi @iconClass.Split(' ').First()"></i>
+                    </div>
+                }
+
+                <div class="card-info">
+                    <h3 class="mb-2 text-truncate" title="@item.OriginalFileName">@item.OriginalFileName</h3>
+                    <div class="d-flex align-items-center gap-3 card-meta">
+                        <span><i class="bi bi-cloud-download mr-1"></i> @item.DownloadCount</span>
+                        <span><i class="bi bi-hdd mr-1"></i> @item.ContentType.Split('/')[0]</span>
+                    </div>
+                </div>
+
+                    <div class="mt-auto pt-3 border-top border-secondary d-flex justify-content-between align-items-center" style="border-top-color: var(--border) !important;">
+                        <span class="text-muted small">@Localizer["shared by"] <span class="text-primary">@Localizer["Community"]</span></span>
+                        <a asp-controller="Upload" asp-action="Download" asp-route-id="@item.FileName" class="btn btn-primary-modern btn-modern btn-sm rounded-circle p-2" style="width: 40px; height: 40px;">
+                            <i class="bi bi-download"></i>
+                        </a>
+                    </div>
+            </div>
+        }
+    </div> @* Closing download-grid *@
+
+    @if (!((IEnumerable<UploadViewModel>)ViewBag.popular).Any())
+    {
+        <div class="row mt-4">
+            <div class="col-12 animate__animated animate__fadeInUp">
+                <div class="text-center py-5 glass rounded-4 border-dashed w-100" style="border: 2px dashed var(--border);">
+                    <i class="bi bi-cloud-upload display-3 text-primary opacity-50 mb-3 d-block"></i>
+                    <p class="text-muted mb-0">No popular downloads available at the moment. Be the first to upload!</p>
+                </div>
+            </div>
+        </div>
+    }
+</div> @* Closing main container from line 35 *@

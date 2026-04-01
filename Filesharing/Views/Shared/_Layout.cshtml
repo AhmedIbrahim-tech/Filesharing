@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Localization;
+@using Microsoft.AspNetCore.Localization;
 @inject IViewLocalizer Localizer;
 
 @* Convert Pages From [ar] to [en] or Reverse According to language*@
@@ -12,17 +12,18 @@
 <html lang="@(ISArabic ? "ar" : "en")">
 <head>
 
-    @Html.Partial("~/Views/Shared/Layout/_Header.cshtml")
+    <partial name="Layout/_Header" />
     
 </head>
 <body dir="@(ISArabic ? "rtl" : "ltr")">
 
-    <!--START SCROLL TOP BUTTON -->
-    <a class="scrollToTop" href="#">
-        <i class="fa fa-angle-up"></i>
-    </a>
-    <!-- END SCROLL TOP BUTTON -->
-    @Html.Partial("~/Views/Shared/Layout/_Navbar.cshtml")
+    <!-- Start Preloader -->
+    <div id="mu-preloader">
+        <div id="mu-status"></div>
+    </div>
+    <!-- End Preloader -->
+
+    <partial name="Layout/_Navbar" />
 
     <div class="">
         <main role="main" class="pb-3">
@@ -30,8 +31,7 @@
         </main>
     </div>
 
-
-    @Html.Partial("~/Views/Shared/Layout/_footer.cshtml")
+    <partial name="Layout/_footer" />
 
     @await RenderSectionAsync("Scripts", required: false)
     <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.js"></script>
@@ -39,6 +39,11 @@
     <script>
         $(document).ready(function(){
             lazyload();
+        });
+
+        $(window).on('load', function() {
+            $('#mu-status').fadeOut();
+            $('#mu-preloader').delay(300).fadeOut('slow');
         });
     </script>
 </body>

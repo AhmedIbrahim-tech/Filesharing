@@ -1,4 +1,4 @@
-﻿using System.Net.Mail;
+using System.Net.Mail;
 
 namespace Filesharing.Helper.Mail
 {
@@ -20,13 +20,13 @@ namespace Filesharing.Helper.Mail
                 Msg.To.Add(model.Email);                    // Get Mail Of Sender 
 				Msg.Subject = model.Subject;
                 Msg.Body = model.Body;
-                Msg.From = new MailAddress(config.GetValue<string>("Mail:From"), config.GetValue<string>("Mail:Sender"), System.Text.Encoding.UTF8);
+                Msg.From = new MailAddress(config.GetValue<string>("Mail:From") ?? string.Empty, config.GetValue<string>("Mail:Sender") ?? string.Empty, System.Text.Encoding.UTF8);
 
                 // To Accept Html 
                 Msg.IsBodyHtml = true;
 
                 // Get Mail and Password that Send to it [ebrahema89859@gmail.com , Password]
-                client.Credentials = new System.Net.NetworkCredential(config.GetValue<string>("Mail:From"), config.GetValue<string>("Mail:PWD"));
+                client.Credentials = new System.Net.NetworkCredential(config.GetValue<string>("Mail:From") ?? string.Empty, config.GetValue<string>("Mail:PWD") ?? string.Empty);
                 client.Send(Msg);
 
             }

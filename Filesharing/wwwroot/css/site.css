@@ -2,30 +2,6 @@ html {
     font-size: 14px;
 }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
-html {
-    position: relative;
-    min-height: 100%;
-}
-
-body {
-    margin-bottom: 60px;
-}
-
-footer {
-    position: fixed;
-    bottom: 0;
-}
-
-
-.field-validation-error{
-    color : red;
-}
 
 
 .mu-contact-content{
@@ -41,4 +17,33 @@ footer {
 
 .navbar-auth{
     width: 25%;
+}
+/* Preloader Styles */
+#mu-preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #020617;
+    z-index: 999999;
+}
+
+#mu-status {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    border-top: 5px solid #38bdf8;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

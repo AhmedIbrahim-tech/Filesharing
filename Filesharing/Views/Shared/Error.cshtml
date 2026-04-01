@@ -1,25 +1,41 @@
-﻿@model ErrorViewModel
-@{
-    ViewData["Title"] = "Error";
-}
+<!-- Page Header -->
+<div id="mu-page-header" class="hero-wrapper pb-5 pt-5">
+    <div class="container text-center">
+        <h1 class="hero-title pt-5 text-danger">@Localizer["Error"]</h1>
+        <p class="text-muted">Something went wrong while processing your request.</p>
+    </div>
+</div>
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="container mt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 animate__animated animate__tada">
+            <div class="download-card p-5 text-center" style="border-top: 4px solid #ef4444;">
+                <div class="card-icon mx-auto mb-4 bg-danger-soft text-danger" style="width: 100px; height: 100px; font-size: 4rem; background: rgba(239, 68, 68, 0.1); border-radius: 50%; line-height: 100px;">
+                    <i class="bi bi-bug"></i>
+                </div>
+                
+                <h2 class="text-white font-weight-bold mb-4">Ouch! We hit a snag.</h2>
+                
+                @if (Model.ShowRequestId)
+                {
+                    <div class="alert glass text-white border-0 py-3 mb-4 rounded-pill">
+                        <small class="text-muted">Request ID:</small> <code class="text-primary font-weight-bold">@Model.RequestId</code>
+                    </div>
+                }
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+                <div class="text-muted mb-5">
+                    <p>This error has been logged. Our developers are probably already looking into it.</p>
+                </div>
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="javascript:history.back()" class="btn btn-outline-modern btn-modern rounded-pill px-4">
+                        <i class="bi bi-arrow-left mr-2"></i> Go Back
+                    </a>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary-modern btn-modern rounded-pill px-4">
+                        <i class="bi bi-house mr-2"></i> Return Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

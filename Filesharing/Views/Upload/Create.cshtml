@@ -1,52 +1,63 @@
-﻿@model InputFile
-
+@model InputFile
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Create upload";
 }
-
-
-<div style="display: flex;justify-content: end;">
-    <a asp-action="Index" class="btn btn-outline-primary"> Back To List </a>
-</div>
-
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-
-
-            <div asp-validation-summary="All" class="text-danger"></div>
-
-            <div class="mb-3">
-                <label for="formFile" class="form-label">Choose file</label>
-                <input asp-for="File" class="form-control" type="file" id="formFile">
-
-            </div>
-
-            <br />
-            <div class="form-group">
-                <button type="submit" class="btn btn-outline-primary ">Upload</button>
-            </div>
-
-
-        </form>
+<!-- Page Header -->
+<div id="mu-page-header" class="hero-wrapper pb-5 pt-5">
+    <div class="container text-center">
+        <h1 class="hero-title pt-5 animate__animated animate__fadeInDown">@Localizer["Upload New File"]</h1>
+        <p class="text-muted animate__animated animate__fadeInUp">Quickly share your digital assets with the community.</p>
+        
+        <div class="mt-4 animate__animated animate__fadeIn">
+             <a asp-action="Index" class="btn btn-outline-modern btn-modern rounded-pill">
+                <i class="bi bi-arrow-left mr-2"></i> @Localizer["Back to List"]
+            </a>
+        </div>
     </div>
 </div>
 
+<div class="container mt-5 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 animate__animated animate__fadeInUp">
+            <div class="download-card p-5">
+                <div class="mu-title text-center mb-5">
+                    <h2 class="font-weight-bold mb-3"><span class="text-gradient">Choose</span> Your File</h2>
+                    <p class="text-muted small">Select a file from your device to begin the sharing process.</p>
+                </div>
 
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger mb-4"></div>
+
+                    <div class="mb-5 text-center">
+                        <div class="position-relative">
+                             <div class="upload-drop-zone p-5 text-center rounded-4 border-dashed mx-auto" style="border: 2px dashed var(--border); transition: all 0.3s; background: rgba(56, 189, 248, 0.03); max-width: 500px;">
+                                <i class="bi bi-cloud-arrow-up display-4 text-primary mb-3 d-block"></i>
+                                <span class="text-muted font-weight-500" id="fileNameDisplay">@Localizer["Drag or click to choose file"]</span>
+                                <input asp-for="File" class="form-control position-absolute opacity-0" type="file" id="formFile" style="top: 0; left: 0; height: 100%; width: 100%; cursor: pointer;">
+                             </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary-modern btn-modern w-100 justify-content-center rounded-pill py-3 px-5" style="max-width: 400px; margin: 0 auto;">
+                            <i class="bi bi-upload mr-2"></i> @Localizer["Start Uploading"]
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        // Add the following code if you want the name of the file appear on select
         $("#formFile").on("change", function () {
             var fileName = $(this).val().split("\\").pop();
-            $(this).siblings(".form-label").addClass("selected").html(fileName);
+            $("#fileNameDisplay").text(fileName || "Drag or click to choose file");
+            $(this).closest(".upload-drop-zone").addClass("border-primary").css("background", "rgba(56, 189, 248, 0.05)");
         });
     </script>
-
-
 }

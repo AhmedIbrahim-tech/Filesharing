@@ -1,4 +1,4 @@
-﻿@model IEnumerable<UploadViewModel>
+@model IEnumerable<UploadViewModel>
 @{
     ViewData["Title"] = "Browse";
     var ContentTypeArr = new[] { "image/png", "image/jpeg" };
@@ -8,82 +8,83 @@
 @* <h1>Browse Uploads</h1> *@
 
 @* <hr> *@
-	<!-- Start Page Header area -->
-	<div id="mu-page-header">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="mu-page-header-area">
-						<h1 class="mu-page-header-title">Browse Uploads</h1>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Page Header area -->
+<!-- Page Header -->
+<div id="mu-page-header" class="hero-wrapper mb-5">
+    <div class="container text-center">
+        <h1 class="hero-title pt-5">@Localizer["Browse Uploads"]</h1>
+        <p class="text-muted">Discover and download files shared with the community.</p>
+    </div>
+</div>
 
-	<!-- Start Breadcrumb -->
-	<div id="mu-breadcrumb">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<nav aria-label="breadcrumb" role="navigation">
-					  <ol class="breadcrumb mu-breadcrumb">
-					    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-					    <li class="breadcrumb-item active" aria-current="page">Browse Uploads</li>
-					  </ol>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- End Breadcrumb -->
-
-
-
-<div class="container">
+<div class="container mt-5 pb-5">
     <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="card mb-3">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
+        <div class="col-12">
+            <div class="download-grid">
+                @foreach (var item in Model)
+                {
+                    <div class="download-card animate__animated animate__fadeInUp">
                         @if (ContentTypeArr.Contains(item.ContentType))
                         {
-                            <img width="100%" height="100%" src="~/Uploads/@item.FileName" class="img-thumbnail" alt="@item.OriginalFileName" />
-                        }else{
-                            <img width="100%" height="100%" src="~/img/File.png" class="img-thumbnail" alt="@item.OriginalFileName" />
+                            <img src="~/Uploads/@item.FileName" class="card-thumbnail" alt="@item.OriginalFileName" />
                         }
-                    </div>
-                    <div class="col-md-8 d-flex align-items-center">
-                        <div class="card-body">
-                            <h5 class="card-title"> @item.OriginalFileName.ToUpper()</h5>
-                            <p class="card-text">
-                                @{
-                                    var size = item.Size / 1024;
-                                    if (size < 1024)
-                                    {
+                        else
+                        {
+                            var fileExt = System.IO.Path.GetExtension(item.OriginalFileName).ToLower();
+                            var iconClass = fileExt switch {
+                                ".pdf" => "bi-file-pdf pdf",
+                                ".zip" or ".rar" => "bi-file-zip zip",
+                                ".doc" or ".docx" => "bi-file-word doc",
+                                ".xls" or ".xlsx" => "bi-file-excel xls",
+                                ".txt" => "bi-file-text txt",
+                                _ => "bi-file-earmark"
+                            };
+                            
+                            <div class="card-icon @iconClass.Split(' ').Last()">
+                                <i class="bi @iconClass.Split(' ').First()"></i>
+                            </div>
+                        }
 
-                                        <span> <strong> Size : </strong> @Math.Floor(Convert.ToDecimal(size)) Kb</span>
+                        <div class="card-info">
+                            <h3 class="mb-2 text-truncate" title="@item.OriginalFileName">@item.OriginalFileName</h3>
+                            <div class="card-meta d-flex flex-wrap gap-3">
+                                <span><i class="bi bi-hdd mr-1"></i> 
+                                    @{
+                                        var size = item.Size / 1024;
+                                        if (size < 1024) { @(Math.Floor(Convert.ToDecimal(size))) @:Kb 
+                                        } else { @(Math.Round(Convert.ToDecimal(size) / 1024, 2)) @:Mb 
+                                        }
                                     }
-                                    else
-                                    {
-                                        <span> <strong> Size : </strong> (@Math.Floor(Convert.ToDecimal(size)) / 1024) Mb</span>
-                                    }
-                                }
-                            </p>
-                            <p class="card-text"><strong> Date : </strong> @item.UploadDate</p>
-                            <p class="card-text"> <strong> Download Count : </strong> @item.DownloadCount</p>
-                            <a class="btn btn-success" style="float: right;" asp-action="Download" asp-controller="Upload" asp-route-id="@item.FileName">Download</a>
+                                </span>
+                                <span><i class="bi bi-calendar3 mr-1"></i> @item.UploadDate.ToString("MMM dd, yyyy")</span>
+                                <span><i class="bi bi-download mr-1"></i> @item.DownloadCount</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto pt-3 border-top border-secondary d-flex justify-content-between align-items-center" style="border-top-color: var(--border) !important;">
+                             <a asp-action="Download" asp-controller="Upload" asp-route-id="@item.FileName" class="btn btn-primary-modern btn-modern w-100 justify-content-center rounded-pill">
+                                @Localizer["Download Now"] <i class="bi bi-cloud-arrow-down ml-2"></i>
+                             </a>
                         </div>
                     </div>
-
-                </div>
+                }
             </div>
-        }
-        <div class="col-12 text-center">
-            <a href="/Upload/Browse" class="btn btn-outline-primary">PREV</a>
-            <a href="/Upload/Browse" class="btn btn-outline-primary">NEXT</a>
+
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5 glass rounded-4">
+                    <i class="bi bi-folder2-open display-1 text-muted mb-4"></i>
+                    <h3 class="text-muted">No files found here yet.</h3>
+                </div>
+            }
+
+            <div class="col-12 text-center mt-5 d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-1s">
+                <a href="#" class="btn btn-primary-modern btn-modern rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                    <i class="bi bi-chevron-left" style="font-size: 1.2rem;"></i>
+                </a>
+                <a href="#" class="btn btn-primary-modern btn-modern rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                    <i class="bi bi-chevron-right" style="font-size: 1.2rem;"></i>
+                </a>
+            </div>
         </div>
     </div>
 </div>

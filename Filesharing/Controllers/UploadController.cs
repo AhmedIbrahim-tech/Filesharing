@@ -1,23 +1,22 @@
-﻿#region Constructor
 using Filesharing.Services.Interface;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Filesharing.Controllers
 {
     [Authorize]
     public class UploadController : Controller
     {
+        #region Constructor (s)
         private readonly IUploadService db;
-		private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-		public UploadController(IUploadService db , IWebHostEnvironment WebHostEnvironment)
+        public UploadController(IUploadService db, IWebHostEnvironment WebHostEnvironment)
         {
             this.db = db;
-			webHostEnvironment = WebHostEnvironment;
-		}
+            webHostEnvironment = WebHostEnvironment;
+        }
 
         #endregion
-        
+
         #region Index (To_Get_Upload_By_UserID)
 
         public IActionResult Index()
@@ -45,7 +44,7 @@ namespace Filesharing.Controllers
         public async Task<IActionResult> Download(string id)
         {
             var selectedFile = await db.FindAsync(id);
-            
+
             if (selectedFile == null) { return NotFound(); }
 
             await db.IncreamentDownloadCountAsync(id);
@@ -53,8 +52,8 @@ namespace Filesharing.Controllers
             var path = "~/Uploads/" + selectedFile.FileName;
 
             #region Clear Cache
-            Response.Headers.Add("Expires", DateTime.Now.AddDays(-3).ToLongDateString());
-            Response.Headers.Add("Cache-Control", "no-cache");
+            Response.Headers.Append("Expires", DateTime.Now.AddDays(-3).ToString("R"));
+            Response.Headers.Append("Cache-Control", "no-cache");
             #endregion
 
             return File(path, selectedFile.ContentType, selectedFile.OriginalFileName);
@@ -77,7 +76,7 @@ namespace Filesharing.Controllers
             if (ModelState.IsValid)
             {
                 // Get Filename new Guid to make it Unique ex.
-                var NewFile = Guid.NewGuid().ToString();                 
+                var NewFile = Guid.NewGuid().ToString();
                 var extention = Path.GetExtension(model.File.FileName);
                 var fileName = string.Concat(NewFile, extention);
 
@@ -123,7 +122,7 @@ namespace Filesharing.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             // This's Code Be., Not AnyOne Delete Item From Another User 
-            var selecteditem = await db.FindAsync(id , userid);
+            var selecteditem = await db.FindAsync(id, userid);
             if (selecteditem == null)
             {
                 return NotFound();
@@ -136,7 +135,7 @@ namespace Filesharing.Controllers
         public async Task<IActionResult> ConfirmDelete(int id)
         {
             await db.DeleteAsync(id, userid);
-            
+
             return RedirectToAction("Index");
         }
 
@@ -150,19 +149,19 @@ namespace Filesharing.Controllers
         {
             var result = db.Search(term);
 
-			return View(result);
+            return View(result);
         }
-		#endregion
+        #endregion
 
-		#region Helper
-		private string userid
-		{
-			get
-			{
-				return User.FindFirstValue(ClaimTypes.NameIdentifier);
-			}
-		}
+        #region Helper
+        private string userid
+        {
+            get
+            {
+                return User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+            }
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -1,26 +1,18 @@
-﻿#region Fields
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Filesharing.Models;
 using Filesharing.Services.Interface;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Filesharing.Services.Repository
 {
-
-    #endregion
 
     #region Contractor
 
     public class UploadService : IUploadService
     {
         private readonly ApplicationDBContext db;
-        private readonly IMapper _mapper;
 
-        public UploadService(ApplicationDBContext db, IMapper mapper)
+        public UploadService(ApplicationDBContext db)
         {
             this.db = db;
-            _mapper = mapper;
         }
 
         #endregion
@@ -30,15 +22,16 @@ namespace Filesharing.Services.Repository
         {
             var result = db.Uploads
                     .OrderByDescending(u => u.DownloadCount)
-                    .ProjectTo<UploadViewModel>(_mapper.ConfigurationProvider); // → ProjectTo comes from AutoMapper
-            //.Select(u => new UploadViewModel
-            //{
-            //	FileName = u.FileName,
-            //	Size = u.Size,
-            //	ContentType = u.ContantType,
-            //	OriginalFileName = u.OriginalFileName,
-            //	DownloadCount = u.DownloadCount,
-            //}).ToListAsync();
+                    .Select(u => new UploadViewModel
+                    {
+                        ID = u.ID,
+                        FileName = u.FileName,
+                        Size = u.Size,
+                        ContentType = u.ContentType,
+                        OriginalFileName = u.OriginalFileName,
+                        DownloadCount = u.DownloadCount,
+                        UploadDate = u.UploadDate
+                    });
             return result;
         }
 
@@ -49,7 +42,16 @@ namespace Filesharing.Services.Repository
         public IQueryable<UploadViewModel> GetAllUploadsbyUserID(string userId)
         {
             var result = db.Uploads.Where(x => x.UserId == userId).OrderByDescending(a => a.UploadDate)
-                .ProjectTo<UploadViewModel>(_mapper.ConfigurationProvider); // → ProjectTo comes from AutoMapper
+                .Select(u => new UploadViewModel
+                {
+                    ID = u.ID,
+                    FileName = u.FileName,
+                    Size = u.Size,
+                    ContentType = u.ContentType,
+                    OriginalFileName = u.OriginalFileName,
+                    DownloadCount = u.DownloadCount,
+                    UploadDate = u.UploadDate
+                });
             return result;
         }
 
@@ -66,7 +68,16 @@ namespace Filesharing.Services.Repository
                             U.ContentType.Contains(term)
                             )
                           .OrderByDescending(x => x.DownloadCount)
-                          .ProjectTo<UploadViewModel>(_mapper.ConfigurationProvider); // → ProjectTo comes from AutoMapper
+                          .Select(u => new UploadViewModel
+                          {
+                              ID = u.ID,
+                              FileName = u.FileName,
+                              Size = u.Size,
+                              ContentType = u.ContentType,
+                              OriginalFileName = u.OriginalFileName,
+                              DownloadCount = u.DownloadCount,
+                              UploadDate = u.UploadDate
+                          });
             return Model;
         }
 
@@ -76,18 +87,17 @@ namespace Filesharing.Services.Repository
 
         public async Task CreateAsync(InputUpload model)
         {
-            var MapperObj = _mapper.Map<Upload>(model);
-            //var inputupload = new Upload()
-            //{
-            //	OriginalFileName = model.FileName,
-            //	FileName = model.FileName,
-            //	ContantType = model.ContentType,
-            //	Size = model.Size,
-            //	UserId = model.UserId,
-            //	UploadDate = DateTime.Now
-            //};
+            var uploadObject = new Upload
+            {
+                OriginalFileName = model.OriginalFileName,
+                FileName = model.FileName,
+                ContentType = model.ContentType,
+                Size = model.Size,
+                UserId = model.UserId,
+                UploadDate = DateTime.Now
+            };
 
-            await db.Uploads.AddAsync(MapperObj);
+            await db.Uploads.AddAsync(uploadObject);
             await db.SaveChangesAsync();
         }
 
@@ -118,50 +128,44 @@ namespace Filesharing.Services.Repository
 
         #region Find By (Id , user-id)
 
-        public async Task<UploadViewModel> FindAsync(int id, string userid)
+        public async Task<UploadViewModel?> FindAsync(int id, string userid)
         {
             // This's Code Be., Not AnyOne Delete Item From Another User 
             var SelectedItem = await db.Uploads.FirstOrDefaultAsync(x => x.ID == id && x.UserId == userid);
             if (SelectedItem != null)
             {
-                var obj = _mapper.Map<Upload , UploadViewModel>(SelectedItem);
-                return obj;
-                //var dto = new UploadViewModel
-                //{
-                //	ID = SelectedItem.ID,
-                //	ContentType = SelectedItem.ContantType,
-                //	FileName = SelectedItem.FileName,
-                //	OriginalFileName = SelectedItem.OriginalFileName,
-                //	Size = SelectedItem.Size,
-                //	UploadDate = SelectedItem.UploadDate,
-                //	DownloadCount = SelectedItem.DownloadCount
-
-                //};
+                return new UploadViewModel
+                {
+                    ID = SelectedItem.ID,
+                    ContentType = SelectedItem.ContentType,
+                    FileName = SelectedItem.FileName,
+                    OriginalFileName = SelectedItem.OriginalFileName,
+                    Size = SelectedItem.Size,
+                    UploadDate = SelectedItem.UploadDate,
+                    DownloadCount = SelectedItem.DownloadCount
+                };
             }
             return null;
         }
 
 
 
-        public async Task<UploadViewModel> FindAsync(string id)
+        public async Task<UploadViewModel?> FindAsync(string id)
         {
             // This's Code Be., Not AnyOne Delete Item From Another User 
             var SelectedItem = await db.Uploads.FirstOrDefaultAsync(x=>x.FileName == id);
             if (SelectedItem != null)
             {
-                return _mapper.Map<UploadViewModel>(SelectedItem);
-                //var dto = new UploadViewModel
-                //{
-                //	ID = SelectedItem.ID,
-                //	ContentType = SelectedItem.ContantType,
-                //	FileName = SelectedItem.FileName,
-                //	OriginalFileName = SelectedItem.OriginalFileName,
-                //	Size = SelectedItem.Size,
-                //	UploadDate = SelectedItem.UploadDate,
-                //	DownloadCount = SelectedItem.DownloadCount
-
-                //};
-                //return dto;
+                return new UploadViewModel
+                {
+                    ID = SelectedItem.ID,
+                    ContentType = SelectedItem.ContentType,
+                    FileName = SelectedItem.FileName,
+                    OriginalFileName = SelectedItem.OriginalFileName,
+                    Size = SelectedItem.Size,
+                    UploadDate = SelectedItem.UploadDate,
+                    DownloadCount = SelectedItem.DownloadCount
+                };
             }
             return null;
         }

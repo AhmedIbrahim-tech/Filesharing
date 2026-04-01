@@ -26,6 +26,19 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 }).AddEntityFrameworkStores<ApplicationDBContext>();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+	options.LoginPath = "/Account/Login";
+	options.LogoutPath = "/Account/Logout";
+	options.AccessDeniedPath = "/Account/AccessDenied";
+	options.ExpireTimeSpan = TimeSpan.FromDays(30); // Long duration
+	options.SlidingExpiration = true; // Refresh expiration on use
+	options.Cookie.HttpOnly = true;
+	options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Recommended
+	options.Cookie.SameSite = SameSiteMode.Lax;
+	options.Cookie.Name = ".Filesharing.Auth";
+});
+
 #endregion
 
 
@@ -45,12 +58,6 @@ builder.Services.AddLocalization();
 #endregion
 
 
-// AutoMapper
-#region AutoMapper
-
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-#endregion
 
 
 // For Auth by Google And FaceBook
@@ -77,9 +84,10 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
 	app.UseExceptionHandler("/Home/Error");
-	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	app.UseHsts();
 }
+
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 
 // Http >> Htpps

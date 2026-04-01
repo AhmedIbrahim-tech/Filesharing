@@ -1,22 +1,30 @@
-﻿@inject IViewLocalizer Localizer;
+@inject IViewLocalizer Localizer;
 
-@if (User.Identity.IsAuthenticated)
+@if (User.Identity?.IsAuthenticated == true)
 {
-
     <li class="nav-item">
-        <a asp-area="" asp-controller="Home" asp-action="Info">@Localizer["Hi"], @User.Identity.Name</a>
+        <a class="nav-link d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Info">
+            <i class="bi bi-person-circle me-2 text-primary"></i>
+            <span class="font-weight-600">@User.Identity.Name</span>
+        </a>
     </li>
 
-    <li class="nav-item">
-        <a asp-area="" asp-controller="Account" asp-action="LogOut">@Localizer["Logout"]</a>
+    <li class="nav-item ms-lg-2">
+        <a class="btn btn-outline-modern btn-modern btn-sm rounded-pill px-3" asp-area="" asp-controller="Account" asp-action="LogOut">
+            <i class="bi bi-box-arrow-right me-1"></i> @Localizer["Logout"]
+        </a>
     </li>
 }
 else
 {
-    <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/account/register" ? "active" : "")">
-         <a asp-controller="Account" asp-action="Register">@Localizer["Register"]</a>
+    <li class="nav-item @(Context.Request.Path.Value?.ToLower() == "/account/register" ? "active" : "")">
+         <a class="nav-link" asp-controller="Account" asp-action="Register">
+             <i class="bi bi-person-plus me-2"></i>@Localizer["Register"]
+         </a>
     </li>
-    <li class="nav-item @(Context.Request.Path.Value.ToLower() == "/account/login" ? "active" : "")">
-         <a asp-controller="Account" asp-action="Login">@Localizer["Login"]</a>
+    <li class="nav-item ms-lg-3 @(Context.Request.Path.Value?.ToLower() == "/account/login" ? "active" : "")">
+         <a class="btn btn-primary-modern btn-modern rounded-pill px-4" asp-controller="Account" asp-action="Login">
+            <i class="bi bi-box-arrow-in-right me-2"></i>@Localizer["Login"]
+         </a>
     </li>
 }
