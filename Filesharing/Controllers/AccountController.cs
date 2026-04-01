@@ -1,3 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Filesharing.Models;
+using Filesharing.Services;
+
 namespace Filesharing.Controllers;
 
 public class AccountController(IAccountService accountService, SignInManager<IdentityUser> signInManager) : Controller
