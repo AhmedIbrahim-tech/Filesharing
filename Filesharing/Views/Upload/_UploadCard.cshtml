@@ -1,0 +1,56 @@
+@model UploadViewModel
+@{
+    var ContentTypeArr = new[] { "image/png", "image/jpeg", "image/jpg", "image/gif" };
+}
+
+<div class="download-card animate__animated animate__fadeInUp" id="file-card-@Model.ID">
+    @if (ContentTypeArr.Contains(Model.ContentType))
+    {
+        <img src="~/Uploads/@Model.FileName" class="card-thumbnail" alt="@Model.OriginalFileName" />
+    }
+    else
+    {
+        var fileExt = System.IO.Path.GetExtension(Model.OriginalFileName).ToLower();
+        var iconClass = fileExt switch {
+            ".pdf" => "bi-file-pdf pdf",
+            ".zip" or ".rar" => "bi-file-zip zip",
+            ".doc" or ".docx" => "bi-file-word doc",
+            ".xls" or ".xlsx" => "bi-file-excel xls",
+            ".txt" => "bi-file-text txt",
+            _ => "bi-file-earmark"
+        };
+        
+        <div class="card-icon @iconClass.Split(' ').Last()">
+            <i class="bi @iconClass.Split(' ').First()"></i>
+        </div>
+    }
+
+    <div class="card-info">
+        <h3 class="mb-2 text-truncate" title="@Model.OriginalFileName">@Model.OriginalFileName</h3>
+        <div class="card-meta d-flex flex-wrap gap-3">
+            <span><i class="bi bi-hdd mr-1"></i> 
+                @{
+                    var size = Model.Size / 1024;
+                    if (size < 1024) { @(Math.Floor(Convert.ToDecimal(size))) @:Kb 
+                    } else { @(Math.Round(Convert.ToDecimal(size) / 1024, 2)) @:Mb 
+                    }
+                }
+            </span>
+            <span><i class="bi bi-download mr-1"></i> @Model.DownloadCount</span>
+        </div>
+    </div>
+
+    <div class="mt-auto pt-4 d-flex align-items-center justify-content-between border-top border-white-10" style="border-top-color: rgba(255,255,255,0.05) !important;">
+            <button type="button" 
+                    class="btn btn-sm btn-outline-danger rounded-pill px-3 py-2 d-flex align-items-center transition-all"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#deleteModal" 
+                    data-file-id="@Model.ID" 
+                    data-file-name="@Model.OriginalFileName">
+            <i class="bi bi-trash-fill me-2"></i> Delete
+            </button>
+            <a asp-controller="Upload" asp-action="Download" asp-route-id="@Model.FileName" class="btn btn-sm btn-primary-modern rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px; min-width: 38px; transition: all 0.3s ease;">
+            <i class="bi bi-download"></i>
+            </a>
+    </div>
+</div>

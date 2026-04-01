@@ -30,42 +30,30 @@ public class UploadController(IUploadService uploadService) : Controller
         return File($"~/{path}", selectedFile.ContentType, selectedFile.OriginalFileName);
     }
 
-    [HttpGet]
-    public IActionResult Create() => View();
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(InputFile model)
     {
-        if (!ModelState.IsValid)
-            return View(model);
+        if (!ModelState.IsValid || model.File == null)
+            return Json(new { success = false, message = "Please select a valid file to upload." });
 
         var result = await uploadService.UploadFileAsync(model.File, UserId);
         
         if (result == null)
-        {
-            ModelState.AddModelError(string.Empty, "File upload failed.");
-            return View(model);
-        }
+            return Json(new { success = false, message = "File upload failed. Ensure the file is under 5MB." });
 
-        return RedirectToAction(nameof(Index));
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var selectedItem = await uploadService.FindAsync(id, UserId);
-        if (selectedItem == null) return NotFound();
-        return View(selectedItem);
+        // For AJAX, we return the partial view of the newly created card
+        return PartialView("_UploadCard", result);
     }
 
     [HttpPost]
-    [ActionName("Delete")]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ConfirmDelete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        await uploadService.DeleteAsync(id, UserId);
-        return RedirectToAction(nameof(Index));
+        var success = await uploadService.DeleteAsync(id, UserId);
+        if (!success) return Json(new { success = false, message = "Failed to delete file." });
+
+        return Json(new { success = true, message = "File deleted successfully!" });
     }
 
     [HttpPost]

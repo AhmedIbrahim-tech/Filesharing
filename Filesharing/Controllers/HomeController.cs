@@ -51,7 +51,8 @@ namespace Filesharing.Controllers
             await db.Contacts.AddAsync(contactEntry);
             await db.SaveChangesAsync();
 
-            TempData["Message"] = "Your message has been sent successfully!";
+            Response.Cookies.Append("fs_msg", "Your message has been sent successfully! We will get back to you soon.", new CookieOptions { Path = "/" });
+            Response.Cookies.Append("fs_type", "success", new CookieOptions { Path = "/" });
 
             // Prepare and send notification email
             var emailBody = new StringBuilder();

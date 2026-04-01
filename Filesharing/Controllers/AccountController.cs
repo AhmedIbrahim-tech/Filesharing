@@ -24,8 +24,14 @@ public class AccountController(IAccountService accountService, SignInManager<Ide
         var result = await accountService.LoginAsync(model);
 
         if (result.Succeeded)
+        {
+            Response.Cookies.Append("fs_msg", "Welcome back! Login successful.", new CookieOptions { Path = "/" });
+            Response.Cookies.Append("fs_type", "success", new CookieOptions { Path = "/" });
             return RedirectToLocal(returnUrl);
+        }
 
+        Response.Cookies.Append("fs_msg", "Invalid email or password.", new CookieOptions { Path = "/" });
+        Response.Cookies.Append("fs_type", "danger", new CookieOptions { Path = "/" });
         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
         return View(model);
     }
@@ -50,8 +56,14 @@ public class AccountController(IAccountService accountService, SignInManager<Ide
         var (result, user) = await accountService.RegisterAsync(model);
 
         if (result.Succeeded)
+        {
+            Response.Cookies.Append("fs_msg", "Account created successfully! Welcome to the family.", new CookieOptions { Path = "/" });
+            Response.Cookies.Append("fs_type", "success", new CookieOptions { Path = "/" });
             return RedirectToLocal(returnUrl);
+        }
 
+        Response.Cookies.Append("fs_msg", "Registration failed. Please check the requirements.", new CookieOptions { Path = "/" });
+        Response.Cookies.Append("fs_type", "danger", new CookieOptions { Path = "/" });
         AddErrors(result);
         return View(model);
     }
@@ -60,6 +72,8 @@ public class AccountController(IAccountService accountService, SignInManager<Ide
     public async Task<IActionResult> LogOut()
     {
         await accountService.LogoutAsync();
+        Response.Cookies.Append("fs_msg", "Successfully logged out. See you soon!", new CookieOptions { Path = "/" });
+        Response.Cookies.Append("fs_type", "success", new CookieOptions { Path = "/" });
         return RedirectToAction("Index", "Home");
     }
 
@@ -77,19 +91,31 @@ public class AccountController(IAccountService accountService, SignInManager<Ide
     {
         var info = await signInManager.GetExternalLoginInfoAsync();
         if (info == null)
+        {
+            Response.Cookies.Append("fs_msg", "External login failed.", new CookieOptions { Path = "/" });
+            Response.Cookies.Append("fs_type", "danger", new CookieOptions { Path = "/" });
             return RedirectToAction(nameof(Login));
+        }
 
         var result = await accountService.ExternalLoginSignInAsync(info);
 
         if (result.Succeeded)
+        {
+            Response.Cookies.Append("fs_msg", $"Logged in with {info.LoginProvider}.", new CookieOptions { Path = "/" });
+            Response.Cookies.Append("fs_type", "success", new CookieOptions { Path = "/" });
             return RedirectToAction("Index", "Home");
+        }
 
         var createResult = await accountService.CreateExternalUserAsync(info);
         if (createResult.Result.Succeeded)
         {
+            Response.Cookies.Append("fs_msg", "External account linked and created successfully!", new CookieOptions { Path = "/" });
+            Response.Cookies.Append("fs_type", "success", new CookieOptions { Path = "/" });
             return RedirectToAction("Index", "Home");
         }
 
+        Response.Cookies.Append("fs_msg", "External login creation failed.", new CookieOptions { Path = "/" });
+        Response.Cookies.Append("fs_type", "danger", new CookieOptions { Path = "/" });
         AddErrors(createResult.Result);
         return RedirectToAction(nameof(Login));
     }
@@ -108,8 +134,14 @@ public class AccountController(IAccountService accountService, SignInManager<Ide
         var result = await accountService.ChangePasswordAsync(User, model.CurrentPassword, model.NewPassword);
 
         if (result.Succeeded)
+        {
+            Response.Cookies.Append("fs_msg", "Your password has been changed successfully!", new CookieOptions { Path = "/" });
+            Response.Cookies.Append("fs_type", "success", new CookieOptions { Path = "/" });
             return RedirectToAction("Index", "Upload");
+        }
 
+        Response.Cookies.Append("fs_msg", "Failed to change password.", new CookieOptions { Path = "/" });
+        Response.Cookies.Append("fs_type", "danger", new CookieOptions { Path = "/" });
         AddErrors(result);
         return View(model);
     }

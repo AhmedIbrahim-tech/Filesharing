@@ -14,9 +14,9 @@
         <p class="text-muted">Manage your shared files and track their performance.</p>
         
         <div class="mt-4">
-             <a class="btn btn-primary-modern btn-modern rounded-pill" asp-action="Create">
-                <i class="bi bi-plus-circle mr-2"></i> @Localizer["Upload New File"]
-            </a>
+             <button type="button" class="btn btn-primary-modern btn-modern rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                <i class="bi bi-cloud-arrow-up-fill me-2"></i> @Localizer["Upload New File"]
+            </button>
         </div>
     </div>
 </div>
@@ -24,67 +24,195 @@
 <div class="container mt-5 pb-5">
     <div class="row">
         <div class="col-12">
-            <div class="download-grid">
+            <div class="download-grid" id="uploadsGrid">
                 @foreach (var item in Model)
                 {
-                    <div class="download-card animate__animated animate__fadeInUp">
-                        @if (ContentTypeArr.Contains(item.ContentType))
-                        {
-                            <img src="~/Uploads/@item.FileName" class="card-thumbnail" alt="@item.OriginalFileName" />
-                        }
-                        else
-                        {
-                            var fileExt = System.IO.Path.GetExtension(item.OriginalFileName).ToLower();
-                            var iconClass = fileExt switch {
-                                ".pdf" => "bi-file-pdf pdf",
-                                ".zip" or ".rar" => "bi-file-zip zip",
-                                ".doc" or ".docx" => "bi-file-word doc",
-                                ".xls" or ".xlsx" => "bi-file-excel xls",
-                                ".txt" => "bi-file-text txt",
-                                _ => "bi-file-earmark"
-                            };
-                            
-                            <div class="card-icon @iconClass.Split(' ').Last()">
-                                <i class="bi @iconClass.Split(' ').First()"></i>
-                            </div>
-                        }
-
-                        <div class="card-info">
-                            <h3 class="mb-2 text-truncate" title="@item.OriginalFileName">@item.OriginalFileName</h3>
-                            <div class="card-meta d-flex flex-wrap gap-3">
-                                <span><i class="bi bi-hdd mr-1"></i> 
-                                    @{
-                                        var size = item.Size / 1024;
-                                        if (size < 1024) { @(Math.Floor(Convert.ToDecimal(size))) @:Kb 
-                                        } else { @(Math.Round(Convert.ToDecimal(size) / 1024, 2)) @:Mb 
-                                        }
-                                    }
-                                </span>
-                                <span><i class="bi bi-download mr-1"></i> @item.DownloadCount</span>
-                            </div>
-                        </div>
-
-                        <div class="mt-auto pt-4 d-flex align-items-center justify-content-between border-top border-white-10" style="border-top-color: rgba(255,255,255,0.05) !important;">
-                             <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-outline-danger rounded-pill px-3 py-2 d-flex align-items-center transition-all">
-                                <i class="bi bi-trash-fill me-2"></i> @Localizer["Delete"]
-                             </a>
-                             <a asp-controller="Upload" asp-action="Download" asp-route-id="@item.FileName" class="btn btn-sm btn-primary-modern rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; min-width: 38px;">
-                                <i class="bi bi-download"></i>
-                             </a>
-                        </div>
-                    </div>
+                    <partial name="_UploadCard" model="item" />
                 }
             </div>
 
-            @if (!Model.Any())
-            {
-                <div class="text-center py-5 glass rounded-4 border-dashed" style="border: 2px dashed var(--border);">
-                    <i class="bi bi-cloud-upload display-1 text-muted mb-4"></i>
-                    <h3 class="text-muted">You haven't uploaded any files yet.</h3>
-                    <a asp-action="Create" class="btn btn-primary-modern btn-modern mt-3 rounded-pill">Upload your first file</a>
-                </div>
-            }
+            <div id="emptyGridPlaceholder" class="text-center py-5 glass rounded-4 border-dashed @(Model.Any() ? "d-none" : "")" style="border: 2px dashed var(--border);">
+                <i class="bi bi-cloud-upload display-1 text-muted mb-4 opacity-50"></i>
+                <h3 class="text-muted">@Localizer["You haven't uploaded any files yet."]</h3>
+                <button type="button" class="btn btn-primary-modern btn-modern mt-3 rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#uploadModal">@Localizer["Upload your first file"]</button>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Upload Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-surface border-0 rounded-4 shadow-lg overflow-hidden" style="background: var(--bg-surface);">
+            <div class="modal-header border-0 pb-0 pt-4 px-4">
+                <h5 class="modal-title font-weight-bold" id="uploadModalLabel">@Localizer["Upload New File"]</h5>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="ajaxUploadForm" asp-action="Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="modal-body px-4 py-3">
+                    <p class="text-muted small mb-3">Choose a file to share with the community. Maximum size: 5MB.</p>
+                    
+                    <div class="upload-area-wrapper p-4 border-dashed rounded-4 text-center cursor-pointer mb-3 transition-all" style="border: 2px dashed rgba(56, 189, 248, 0.3); background: rgba(56, 189, 248, 0.04);">
+                        <i class="bi bi-cloud-upload-fill display-4 text-primary mb-3 d-block opacity-75"></i>
+                        <h6 class="text-white font-weight-bold mb-1">Click to select or drag and drop</h6>
+                        <p class="text-muted smallest mb-3">Images, PDF, Documents, Sheets, etc.</p>
+                        <input type="file" name="File" class="d-none" id="fileInput" required onchange="updateFileName(this)" />
+                        <button type="button" class="btn btn-primary-modern btn-modern btn-sm rounded-pill px-4" onclick="document.getElementById('fileInput').click()">Select File</button>
+                    </div>
+                    
+                    <div id="selectedFileInfo" class="d-none animate__animated animate__fadeIn">
+                        <div class="alert bg-glass border-white-10 text-white rounded-3 d-flex align-items-center mb-0 px-3 py-2">
+                            <i class="bi bi-file-earmark-check-fill text-primary me-2"></i>
+                            <span id="selectedFileNameSpan" class="text-truncate flex-grow-1 small"></span>
+                            <button type="button" class="btn-close btn-close-white ms-2 smallest" onclick="resetFileInput()" style="font-size: 0.6rem;"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0 pb-4 px-4 gap-3">
+                    <button type="button" class="btn btn-modern btn-outline-danger rounded-pill flex-grow-1 px-3 py-2 d-flex align-items-center justify-content-center" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                    <button type="submit" id="uploadSubmitBtn" class="btn btn-modern btn-primary-modern rounded-pill flex-grow-1 px-3 py-2 shadow-sm d-flex align-items-center justify-content-center">
+                        <span id="uploadBtnText" class="d-flex align-items-center justify-content-center">
+                            @Localizer["Start Upload"] <i class="bi bi-arrow-up-circle-fill ms-1"></i>
+                        </span>
+                        <span id="uploadBtnSpinner" class="d-none align-items-center justify-content-center">
+                            <span class="spinner-border spinner-border-sm me-2"></span> @Localizer["Uploading..."]
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-surface border-0 rounded-4 shadow-lg overflow-hidden" style="background: var(--bg-surface);">
+            <div class="modal-header border-0 pb-0 pt-4 px-4">
+                <h5 class="modal-title font-weight-bold" id="deleteModalLabel">@Localizer["Confirm Deletion"]</h5>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-4 py-4 text-center">
+                <div class="delete-icon-wrapper mb-4 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: rgba(239, 68, 68, 0.1); border-radius: 50%;">
+                    <i class="bi bi-exclamation-triangle-fill text-danger display-4"></i>
+                </div>
+                <p class="text-muted mb-1">@Localizer["Are you sure you want to delete"]</p>
+                <h5 id="fileNameText" class="text-white font-weight-bold mb-4">...</h5>
+                <p class="small text-muted-50 mb-0"><i class="bi bi-info-circle me-1"></i> @Localizer["This action cannot be undone."]</p>
+            </div>
+            <div class="modal-footer border-0 pt-0 pb-4 px-4 gap-3">
+                <button type="button" class="btn btn-modern btn-outline-danger rounded-pill flex-grow-1 px-3 py-2 d-flex align-items-center justify-content-center" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                <button type="button" id="confirmDeleteBtn" class="btn btn-modern btn-primary-modern bg-danger border-0 rounded-pill flex-grow-1 px-3 py-2 shadow-sm d-flex align-items-center justify-content-center" style="background-color: #ef4444 !important; color: white !important;">
+                    @Localizer["Yes, Delete"]
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function updateFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : '';
+            const fileNameSpan = document.getElementById('selectedFileNameSpan');
+            const fileInfoDiv = document.getElementById('selectedFileInfo');
+            
+            if (fileName) {
+                fileNameSpan.textContent = fileName;
+                fileInfoDiv.classList.remove('d-none');
+            } else {
+                fileInfoDiv.classList.add('d-none');
+            }
+        }
+
+        function resetFileInput() {
+            const input = document.getElementById('fileInput');
+            input.value = '';
+            updateFileName(input);
+        }
+
+        // --- AJAX Upload ---
+        $('#ajaxUploadForm').on('submit', function(e) {
+            e.preventDefault();
+            const form = $(this);
+            const formData = new FormData(this);
+            const submitBtn = $('#uploadSubmitBtn');
+            const btnText = $('#uploadBtnText');
+            const btnSpinner = $('#uploadBtnSpinner');
+
+            submitBtn.prop('disabled', true);
+            btnText.addClass('d-none');
+            btnSpinner.removeClass('d-none');
+
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success === false) {
+                        Notify.show(response.message, 'danger');
+                    } else {
+                        // Response is the partial HTML for the new card
+                        $('#uploadsGrid').prepend(response);
+                        $('#emptyGridPlaceholder').addClass('d-none');
+                        bootstrap.Modal.getInstance(document.getElementById('uploadModal')).hide();
+                        form[0].reset();
+                        resetFileInput();
+                        Notify.show('File uploaded successfully!', 'success');
+                    }
+                },
+                error: function() {
+                    Notify.show('Something went wrong during upload.', 'danger');
+                },
+                complete: function() {
+                    submitBtn.prop('disabled', false);
+                    btnText.removeClass('d-none');
+                    btnSpinner.addClass('d-none');
+                }
+            });
+        });
+
+        // --- AJAX Delete ---
+        let fileIdToDelete = null;
+        let cardIdToRemove = null;
+
+        const deleteModal = document.getElementById('deleteModal');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                fileIdToDelete = button.getAttribute('data-file-id');
+                cardIdToRemove = `file-card-${fileIdToDelete}`;
+                const fileName = button.getAttribute('data-file-name');
+                document.getElementById('fileNameText').textContent = fileName;
+            });
+        }
+
+        $('#confirmDeleteBtn').on('click', function() {
+            const btn = $(this);
+            btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-1"></span> Deleting...');
+
+            $.post(`/Upload/Delete/${fileIdToDelete}`, { __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val() }, function(response) {
+                if (response.success) {
+                    $(`#${cardIdToRemove}`).addClass('animate__animated animate__fadeOutDown').one('animationend', function() {
+                        $(this).remove();
+                        if ($('#uploadsGrid .download-card').length === 0) {
+                            $('#emptyGridPlaceholder').removeClass('d-none');
+                        }
+                    });
+                    bootstrap.Modal.getInstance(deleteModal).hide();
+                    Notify.show('File deleted successfully!', 'success');
+                } else {
+                    Notify.show(response.message, 'danger');
+                }
+            }).fail(function() {
+                Notify.show('Failed to communicate with server.', 'danger');
+            }).always(function() {
+                btn.prop('disabled', false).text('Yes, Delete');
+            });
+        });
+    </script>
+}
 

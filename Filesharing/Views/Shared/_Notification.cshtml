@@ -1,0 +1,43 @@
+@if (TempData["Success"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            $.notify({
+                icon: 'bi bi-check-circle-fill',
+                title: 'SUCCESS',
+                message: '@TempData["Success"]'
+            }, {
+                type: 'success',
+                placement: { from: "top", align: "right" },
+                animate: { enter: 'animate__animated animate__fadeInRight', exit: 'animate__animated animate__fadeOutRight' },
+                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0} bg-glass border-primary-20 text-white rounded-pill px-4 shadow-lg" role="alert" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); min-width: 320px;">' +
+                    '<button type="button" aria-hidden="true" class="btn-close btn-close-white float-end ms-3 smallest" data-notify="dismiss"></button>' +
+                    '<i data-notify="icon" class="text-primary me-2"></i> ' +
+                    '<span data-notify="message" class="small fw-500">{2}</span>' +
+                '</div>'
+            });
+        });
+    </script>
+}
+
+@if (TempData["Error"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            $.notify({
+                icon: 'bi bi-exclamation-circle-fill',
+                title: 'ERROR',
+                message: '@TempData["Error"]'
+            }, {
+                type: 'danger',
+                placement: { from: "top", align: "right" },
+                animate: { enter: 'animate__animated animate__shakeX', exit: 'animate__animated animate__fadeOutRight' },
+                template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0} bg-glass border-danger-20 text-white rounded-pill px-4 shadow-lg" role="alert" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); min-width: 320px;">' +
+                    '<button type="button" aria-hidden="true" class="btn-close btn-close-white float-end ms-3 smallest" data-notify="dismiss"></button>' +
+                    '<i data-notify="icon" class="text-danger me-2"></i> ' +
+                    '<span data-notify="message" class="small fw-500">{2}</span>' +
+                '</div>'
+            });
+        });
+    </script>
+}

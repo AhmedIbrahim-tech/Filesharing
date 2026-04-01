@@ -10,7 +10,7 @@ public interface IUploadService
     Task<UploadViewModel?> UploadFileAsync(IFormFile file, string userId);
     Task<UploadViewModel?> FindAsync(int id, string userId);
     Task<UploadViewModel?> FindAsync(string fileName);
-    Task DeleteAsync(int id, string userId);
+    Task<bool> DeleteAsync(int id, string userId);
     Task IncrementDownloadCountAsync(string fileName);
     Task<int> GetUploadCountAsync();
 }
@@ -78,7 +78,7 @@ public class UploadService(ApplicationDBContext db, IWebHostEnvironment webHostE
         return await FindAsync(upload.ID, userId);
     }
 
-    public async Task DeleteAsync(int id, string userId)
+    public async Task<bool> DeleteAsync(int id, string userId)
     {
         var selectedItem = await db.Uploads.FirstOrDefaultAsync(u => u.ID == id && u.UserId == userId);
         if (selectedItem != null)
@@ -88,8 +88,9 @@ public class UploadService(ApplicationDBContext db, IWebHostEnvironment webHostE
                 File.Delete(filePath);
 
             db.Uploads.Remove(selectedItem);
-            await db.SaveChangesAsync();
+            return await db.SaveChangesAsync() > 0;
         }
+        return false;
     }
 
     public async Task<UploadViewModel?> FindAsync(int id, string userId)
