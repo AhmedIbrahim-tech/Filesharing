@@ -26,7 +26,7 @@ public static class DependencyInjection
     private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDBContext>(option =>
-            option.UseSqlServer(
+            option.UseSqlite(
                 configuration.GetConnectionString("DefaultConnection"),
                 b => b.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName)));
     }

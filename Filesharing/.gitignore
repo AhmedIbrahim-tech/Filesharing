@@ -19,3 +19,8 @@ artifacts/
 # User Uploads
 wwwroot/Uploads/*
 !wwwroot/Uploads/.gitkeep
+
+# SQLite (local dev database)
+*.db
+*.db-shm
+*.db-wal

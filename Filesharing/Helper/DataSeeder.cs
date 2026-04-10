@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-
 namespace Filesharing.Helper;
 
 public static class DataSeeder
@@ -12,13 +10,11 @@ public static class DataSeeder
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-        // 1. Ensure Admin Role exists
         if (!await roleManager.RoleExistsAsync(AdminRole))
         {
             await roleManager.CreateAsync(new IdentityRole(AdminRole));
         }
 
-        // 2. Ensure Super Admin User exists
         var adminUser = await userManager.FindByEmailAsync(AdminEmail);
         if (adminUser == null)
         {
@@ -29,7 +25,7 @@ public static class DataSeeder
                 EmailConfirmed = true
             };
 
-            var result = await userManager.CreateAsync(adminUser, "Admin@123"); // Default temporary password
+            var result = await userManager.CreateAsync(adminUser, "Admin@123");
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(adminUser, AdminRole);
@@ -37,7 +33,6 @@ public static class DataSeeder
         }
         else
         {
-            // Ensure they have the role even if they existed but role was missing
             if (!await userManager.IsInRoleAsync(adminUser, AdminRole))
             {
                 await userManager.AddToRoleAsync(adminUser, AdminRole);
